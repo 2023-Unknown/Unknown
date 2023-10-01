@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ChatMessage {
     public enum MessageType {
-        CHAT, JOIN, LEAVE
+        ENTER, TALK
     }
 
     // MessageType
@@ -26,6 +26,6 @@ public class ChatMessage {
     private String sender;
 
     // Content
-    private String content;
+    private String message;
 
 }
