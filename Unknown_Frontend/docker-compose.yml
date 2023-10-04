@@ -1,0 +1,15 @@
+# Test Docker Compose
+version: '3.8'
+services:
+  web:
+    build:
+      context: ./
+      target: runner
+    container_name: web
+    volumes:
+      - .:/app
+    command: npm run dev
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development

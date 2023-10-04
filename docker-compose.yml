@@ -1,6 +1,6 @@
 # Docker Setting for Backend
 
-version: '3'
+version: '3.8'
 services:
 
   # Monitoring
@@ -104,7 +104,7 @@ services:
     image: redis:latest
     ports:
       - "6379:6379"
-  # API Server / Uvicorn / FastAPI
+  # Backend API Server
   fastapi_api:
     build:
       context: data/python
@@ -134,23 +134,33 @@ services:
       - docker_network
     
   springboot_api:
-      build:		#image를 DockerFile 기반으로 사용한다
-        context: springboot_vscode_test	#DockerFile이 있는 디렉토리
-        dockerfile: Dockerfile	#기존에 설정해둔 DockerFile을 지정히여 build 된 jar 파일을 container에 올린다.
-      restart: always		#컨테이너 재실행
-      depends_on:		#database service가 실행된 이후에 실행
-        - database
+      build:		
+        context: Unknown_Backend/dev	
+        dockerfile: Dockerfile	
+      restart: always		
       ports:
         - 8080:8080
-      container_name: springboot_api    #container 이름 지정
-      environment:	#환경 설정(database연결 및 profile 지정)
-        SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/starbucks_db_test?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+      container_name: springboot_api    
+      environment:
+        SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/unknownDB?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
         SPRING_DATASOURCE_USERNAME: root
         SPRING_DATASOURCE_PASSWORD: 1234
-        SPRING_PROFILES_ACTIVE: dev		#사용할 profile 지정
+        SPRING_PROFILES_ACTIVE: dev		
       networks:
         - docker_network
 
+  # Frontend Server
+  nextjs_frontend:
+    build:
+      context: Unknown_Frontend/
+      dockerfile: Dockerfile
+    container_name: nextjs_frontend
+    command: npm run dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - /Unknown_Frontend:/usr/src/app
+    restart: always
 networks:
   docker_network:
     driver: bridge
