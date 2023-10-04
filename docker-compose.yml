@@ -10,11 +10,9 @@ services:
     ports:
       - "3000:3000"
     env_file:
-      - '/data/grafana/env.grafana'
+      - '/Devops/data/grafana/env.grafana'
     volumes:
-      - '/data/grafana:/var/lib/grafana'
-    links:
-      - influxdb
+      - '/Devops/data/grafana:/var/lib/grafana'
     restart: always
     networks:
       - docker_network
@@ -23,10 +21,10 @@ services:
     image: prom/prometheus
     container_name: prometheus
     volumes:
-      - ./data/prometheus/config:/etc/prometheus
-      - ./data/prometheus/volume:/prometheus
+      - ./Devops/data/prometheus/config:/etc/prometheus
+      - ./Devops/data/prometheus/volume:/prometheus
     ports:
-      - 9090:9090
+      - "9090:9090"
     command:
       - '--web.enable-lifecycle'
       - '--storage.tsdb.path=/prometheus'
@@ -52,7 +50,7 @@ services:
       - '--path.sysfs=/host/sys'
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
     ports:
-      - 9100:9100
+      - "9100:9100"
     networks:
       - docker_network
 
@@ -60,7 +58,7 @@ services:
       image: gcr.io/cadvisor/cadvisor:latest
       container_name: cadvisor
       ports:
-      - 8080:8080
+      - "8080:8080"
       volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw
@@ -83,7 +81,7 @@ services:
     ports:
       - "3306:3306"
     env_file:
-      - '/data/mysql/env.mysql'
+      - '/Unknown_Backend/data/mysql/env.mysql'
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
@@ -92,46 +90,56 @@ services:
       - '/data/mysql/etc:/etc/mysql/conf.d'
     restart: always
 
-  postgres:
-    image: postgres:latest
-    environment:
-      POSTGRES_PASSWORD: postgresadmin
-      POSTGRES_DB: admindb
-    ports:
-      - "5432:5432"
+  # postgres:
+  #   image: postgres:latest
+  #   environment:
+  #     POSTGRES_PASSWORD: postgresadmin
+  #     POSTGRES_DB: admindb
+  #   ports:
+  #     - "5432:5432"
+  #   restart: always
+  #   networks:
+  #     - docker_network
 
   redis:
     image: redis:latest
     ports:
       - "6379:6379"
-  # Backend API Server
-  fastapi_api:
-    build:
-      context: data/python
-      dockerfile: Dockerfile
-    container_name: api
-    working_dir: /code
-    command: uvicorn main:app --host 0.0.0.0 --port 5000 --reload
-    ports:
-      - "5000:5000"
     volumes:
-      - /data/python/app:/code
-    restart: always
-
-  django_api:
-    build:
-      context: data/django_project
-      dockerfile: Dockerfile
-    container_name: api
-    command: >
-      sh -c "python manage.py makemigrations &&
-            python manage.py migrate &&
-            gunicorn --bind 0:5000 config.wsgi:application" 
-    ports:
-      - "5000:5000"
+      - /Devops/data/redis/data:/data
+      - /Devops/data/redis/conf/redis.conf:/usr/local/etc/redis/redis.conf
     restart: always
     networks:
       - docker_network
+
+  # Backend API Server
+  # fastapi_api:
+  #   build:
+  #     context: data/python
+  #     dockerfile: Dockerfile
+  #   container_name: api
+  #   working_dir: /code
+  #   command: uvicorn main:app --host 0.0.0.0 --port 5000 --reload
+  #   ports:
+  #     - "5000:5000"
+  #   volumes:
+  #     - /data/python/app:/code
+  #   restart: always
+
+  # django_api:
+  #   build:
+  #     context: data/django_project
+  #     dockerfile: Dockerfile
+  #   container_name: api
+  #   command: >
+  #     sh -c "python manage.py makemigrations &&
+  #           python manage.py migrate &&
+  #           gunicorn --bind 0:5000 config.wsgi:application" 
+  #   ports:
+  #     - "5000:5000"
+  #   restart: always
+  #   networks:
+  #     - docker_network
     
   springboot_api:
       build:		
@@ -161,6 +169,9 @@ services:
     volumes:
       - /Unknown_Frontend:/usr/src/app
     restart: always
+    networks:
+      - docker_network
+
 networks:
   docker_network:
     driver: bridge
