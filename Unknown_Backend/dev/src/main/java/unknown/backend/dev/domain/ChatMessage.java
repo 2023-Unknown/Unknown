@@ -1,4 +1,4 @@
-package unknown.backend.dev.model;
+package unknown.backend.dev.domain;
 // WebSocketChattingModel
 
 import lombok.AllArgsConstructor;

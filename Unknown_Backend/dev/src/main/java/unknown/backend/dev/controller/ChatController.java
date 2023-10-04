@@ -5,7 +5,7 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import unknown.backend.dev.model.ChatMessage;
+import unknown.backend.dev.domain.ChatMessage;
 
 @RestController
 @RequiredArgsConstructor

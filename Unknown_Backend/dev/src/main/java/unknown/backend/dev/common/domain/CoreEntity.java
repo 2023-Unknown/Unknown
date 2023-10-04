@@ -8,7 +8,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+// get, set, 생성일, 수정일, 삭제일을 자동으로 만들어주는 클래스
 @Getter
 @Setter
 @MappedSuperclass
@@ -18,11 +20,16 @@ public class CoreEntity {
     private LocalDate createdAt;
 
     @LastModifiedDate
-    private LocalDate updateAt;
+    private LocalDate updatedAt;
+
+    private LocalDateTime deletedAt;
+    @PreRemove
+    public void preRemove() {
+        this.deletedAt = LocalDateTime.now();
+    }
 
     @Id
     @Column(name="id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-
 }
