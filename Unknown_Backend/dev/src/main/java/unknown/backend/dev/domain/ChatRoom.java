@@ -1,0 +1,21 @@
+package unknown.backend.dev.domain;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import java.util.UUID;
+
+@Getter
+@Setter
+@NoArgsConstructor
+public class ChatRoom {
+    private String roomId;
+    private String roomName;
+
+    public static ChatRoom create(String roomName) {
+        ChatRoom room = new ChatRoom();
+        room.roomId = UUID.randomUUID().toString();
+        room.roomName = roomName;
+        return room;
+    }
+}

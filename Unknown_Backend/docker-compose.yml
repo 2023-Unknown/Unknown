@@ -16,23 +16,27 @@ services:
     networks:		
       - unknown_network
   
-  springboot:
-      build:		
-        context: dev
-        dockerfile: Dockerfile	
-      restart: always		
-      depends_on:		
-        - mysql
-      ports:
-        - 8080:8080
-      container_name: apiServer
-      environment:	
-        SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/unknownDB?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
-        SPRING_DATASOURCE_USERNAME: root
-        SPRING_DATASOURCE_PASSWORD: 1234
-        SPRING_PROFILES_ACTIVE: dev
-      networks:
-        - unknown_network
+  # springboot:
+  #   build:		
+  #     context: dev
+  #     dockerfile: Dockerfile	
+  #   restart: always		
+  #   depends_on:		
+  #     - mysql
+  #   ports:
+  #     - 8080:8080
+  #   container_name: apiServer
+  #   environment:	
+  #     SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/unknownDB?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+  #     SPRING_DATASOURCE_USERNAME: root
+  #     SPRING_DATASOURCE_PASSWORD: 1234
+  #     SPRING_PROFILES_ACTIVE: dev
+  #   networks:
+  #     - unknown_network
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
 
   redis:
     image: redis:latest
