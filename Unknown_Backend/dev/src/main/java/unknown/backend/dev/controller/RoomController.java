@@ -1,6 +1,6 @@
 package unknown.backend.dev.controller;
 
-import unknown.backend.dev.model.ChatRoom;
+import unknown.backend.dev.domain.ChatRoom;
 import unknown.backend.dev.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/chat")
+@RequestMapping("/api/v1/chat")
 public class RoomController {
     private final ChatService chatService;
 

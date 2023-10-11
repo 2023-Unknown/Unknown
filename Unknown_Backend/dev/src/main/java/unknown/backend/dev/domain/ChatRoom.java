@@ -1,4 +1,4 @@
-package unknown.backend.dev.model;
+package unknown.backend.dev.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

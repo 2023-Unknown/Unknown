@@ -1,6 +1,6 @@
 package unknown.backend.dev.service;
 
-import unknown.backend.dev.model.ChatRoom;
+import unknown.backend.dev.domain.ChatRoom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

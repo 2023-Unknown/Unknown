@@ -1,0 +1,180 @@
+# Docker Setting for Backend
+
+version: '3.8'
+services:
+
+  # Monitoring
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    env_file:
+      - '/Devops/data/grafana/env.grafana'
+    volumes:
+      - '/Devops/data/grafana:/var/lib/grafana'
+    restart: always
+    networks:
+      - docker_network
+  
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./Devops/data/prometheus/config:/etc/prometheus
+      - ./Devops/data/prometheus/volume:/prometheus
+    ports:
+      - "9090:9090"
+    command:
+      - '--web.enable-lifecycle'
+      - '--storage.tsdb.path=/prometheus'
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    user: root
+    restart: always
+    networks:
+      - docker_network
+  
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    ports:
+      - "9100:9100"
+    networks:
+      - docker_network
+
+  cadvisor:
+      image: gcr.io/cadvisor/cadvisor:latest
+      container_name: cadvisor
+      ports:
+      - "8080:8080"
+      volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      depends_on:
+      - prometheus
+
+  redis_insight:
+    image: redislabs/redisinsight:latest
+    container_name: redis_insight
+    ports: 
+      - "8001:8001"
+    restart: always
+  
+  # Database / MySQL / PostgreSQL / Redis
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    env_file:
+      - '/Unknown_Backend/data/mysql/env.mysql'
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - '/data/mysql/data:/var/lib/mysql'
+      - '/data/mysql/etc:/etc/mysql/conf.d'
+    restart: always
+
+  # postgres:
+  #   image: postgres:latest
+  #   environment:
+  #     POSTGRES_PASSWORD: postgresadmin
+  #     POSTGRES_DB: admindb
+  #   ports:
+  #     - "5432:5432"
+  #   restart: always
+  #   networks:
+  #     - docker_network
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - /Devops/data/redis/data:/data
+      - /Devops/data/redis/conf/redis.conf:/usr/local/etc/redis/redis.conf
+    restart: always
+    networks:
+      - docker_network
+
+  # Backend API Server
+  # fastapi_api:
+  #   build:
+  #     context: data/python
+  #     dockerfile: Dockerfile
+  #   container_name: api
+  #   working_dir: /code
+  #   command: uvicorn main:app --host 0.0.0.0 --port 5000 --reload
+  #   ports:
+  #     - "5000:5000"
+  #   volumes:
+  #     - /data/python/app:/code
+  #   restart: always
+
+  # django_api:
+  #   build:
+  #     context: data/django_project
+  #     dockerfile: Dockerfile
+  #   container_name: api
+  #   command: >
+  #     sh -c "python manage.py makemigrations &&
+  #           python manage.py migrate &&
+  #           gunicorn --bind 0:5000 config.wsgi:application" 
+  #   ports:
+  #     - "5000:5000"
+  #   restart: always
+  #   networks:
+  #     - docker_network
+    
+  springboot_api:
+      build:		
+        context: Unknown_Backend/dev	
+        dockerfile: Dockerfile	
+      restart: always		
+      ports:
+        - 8080:8080
+      container_name: springboot_api    
+      environment:
+        SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/unknownDB?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+        SPRING_DATASOURCE_USERNAME: root
+        SPRING_DATASOURCE_PASSWORD: 1234
+        SPRING_PROFILES_ACTIVE: dev		
+      networks:
+        - docker_network
+
+  # Frontend Server
+  nextjs_frontend:
+    build:
+      context: Unknown_Frontend/
+      dockerfile: Dockerfile
+    container_name: nextjs_frontend
+    command: npm run dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - /Unknown_Frontend:/usr/src/app
+    restart: always
+    networks:
+      - docker_network
+
+networks:
+  docker_network:
+    driver: bridge
+
+volumes:
+  test:

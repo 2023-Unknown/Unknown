@@ -1,0 +1,38 @@
+global:
+  scrape_interval: 15s     
+  scrape_timeout: 15s      
+  evaluation_interval: 2m  
+  external_labels:
+    monitor: 'hhs-monitoring'       
+  query_log_file: query_log_file.log
+
+rule_files:
+  - "rule.yml" 
+scrape_configs:
+  - job_name: 'node_exporter' 
+    scrape_interval: 10s      
+    scrape_timeout: 10s       
+    metrics_path: '/metrics'     
+    honor_labels: false       
+    honor_timestamps: true
+    scheme: 'http'            
+    params:
+      user-id: ['tees3359@email.com']
+
+    static_configs:
+      - targets: ['34.195.3.25:9100']
+        labels:
+          service : 'server-1'
+          
+  - job_name: 'django-app'
+    static_configs:
+      - targets: ['34.195.3.25:5000']
+        labels:
+          service: 'django-app'
+
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['34.195.3.25:8080']
+        labels:
+          service: 'cadvisor'
+
