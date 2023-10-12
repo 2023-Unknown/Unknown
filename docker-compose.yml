@@ -110,7 +110,7 @@ services:
         dockerfile: Dockerfile
       restart: always
       ports:
-        - 8080:8080
+        - 8000:8000
       container_name: springboot_api
       environment:
         SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/unknownDB?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
@@ -126,9 +126,9 @@ services:
       context: Unknown_Frontend/
       dockerfile: Dockerfile
     container_name: nextjs_frontend
-    command: npm run build && npm run dev
+    command: npm run dev
     ports:
-      - "3000:3000"
+      - "3300:3300"
     volumes:
       - ./Unknown_Frontend:/usr/src/app
     restart: always
