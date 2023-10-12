@@ -7,6 +7,7 @@ services:
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
+    user: root
     ports:
       - "3000:3000"
     env_file:
@@ -104,14 +105,14 @@ services:
       - docker_network
 
   # Backend API Server
-  springboot_api:
+  api:
       build:
         context: Unknown_Backend/dev
         dockerfile: Dockerfile
       restart: always
       ports:
-        - 8000:8000
-      container_name: springboot_api
+        - "8000:8000"
+      container_name: api
       environment:
         SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/unknownDB?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
         SPRING_DATASOURCE_USERNAME: root
@@ -121,16 +122,33 @@ services:
         - docker_network
 
   # Frontend Server
-  nextjs_frontend:
+  web:
     build:
-      context: Unknown_Frontend/
+      context: ./Unknown_Frontend
+      target: runner
       dockerfile: Dockerfile
-    container_name: nextjs_frontend
+    container_name: web
     command: npm run dev
     ports:
       - "3300:3300"
     volumes:
-      - ./Unknown_Frontend:/usr/src/app
+      - ./Unknown_Frontend:/app
+    restart: always
+    environment:
+      NODE_ENV: development
+    networks:
+      - docker_network
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - './Devops/data/nginx/conf.d:/etc/nginx/conf.d'
+      - './Devops/data/nginx/nginx.conf:/etc/nginx/nginx.conf'
+      - './Devops/data/nginx/html:/usr/share/nginx/html'
+      - './Devops/data/nginx/logs:/var/log/nginx'
     restart: always
     networks:
       - docker_network
