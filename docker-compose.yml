@@ -114,7 +114,7 @@ services:
         - "8000:8000"
       container_name: api
       environment:
-        SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/unknownDB?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+        SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/unknownDB?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
         SPRING_DATASOURCE_USERNAME: root
         SPRING_DATASOURCE_PASSWORD: 1234
         SPRING_PROFILES_ACTIVE: dev
