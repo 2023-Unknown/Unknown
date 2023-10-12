@@ -51,6 +51,12 @@ public class UserController {
         User user = userService.deleteUser(username);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
+    // 신고기능 API
+    @PostMapping("/{username}/report")
+    public String reportUser(@PathVariable String username, ) {
+        userService.reportUser(username);
+        return "Success";
+    }
 
 
 }

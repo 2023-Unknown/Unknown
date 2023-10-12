@@ -101,4 +101,10 @@ public class UserService{
         userRepository.save(user);
         return user;
     }
+
+    public void reportUser(String username) {
+        User user = findByMethodAndValue("name", username);
+        user.setReportCount(user.getReportCount() + 1);
+        userRepository.save(user);
+    }
 }
