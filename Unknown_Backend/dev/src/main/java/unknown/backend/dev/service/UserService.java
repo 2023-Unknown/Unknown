@@ -6,7 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import unknown.backend.dev.domain.Report;
 import unknown.backend.dev.domain.User;
+import unknown.backend.dev.dto.ReportDTO;
 import unknown.backend.dev.dto.UserDTO;
 import unknown.backend.dev.exception.UserNotFoundException;
 import unknown.backend.dev.repository.UserRepository;
@@ -100,11 +102,5 @@ public class UserService{
         user.preRemove();
         userRepository.save(user);
         return user;
-    }
-
-    public void reportUser(String username) {
-        User user = findByMethodAndValue("name", username);
-        user.setReportCount(user.getReportCount() + 1);
-        userRepository.save(user);
     }
 }

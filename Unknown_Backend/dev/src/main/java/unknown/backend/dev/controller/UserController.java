@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import unknown.backend.dev.domain.User;
+import unknown.backend.dev.dto.ReportDTO;
 import unknown.backend.dev.dto.UserDTO;
 import unknown.backend.dev.service.UserService;
 
@@ -50,12 +51,6 @@ public class UserController {
     public ResponseEntity<User> deleteUser(@PathVariable String username) {
         User user = userService.deleteUser(username);
         return new ResponseEntity<>(user, HttpStatus.OK);
-    }
-    // 신고기능 API
-    @PostMapping("/{username}/report")
-    public String reportUser(@PathVariable String username, ) {
-        userService.reportUser(username);
-        return "Success";
     }
 
 
