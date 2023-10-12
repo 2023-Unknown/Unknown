@@ -10,9 +10,9 @@ services:
     ports:
       - "3000:3000"
     env_file:
-      - '/Devops/data/grafana/env.grafana'
+      - './Devops/data/grafana/env.grafana'
     volumes:
-      - '/Devops/data/grafana:/var/lib/grafana'
+      - './Devops/data/grafana:/var/lib/grafana'
     restart: always
     networks:
       - docker_network
@@ -81,7 +81,7 @@ services:
     ports:
       - "3306:3306"
     env_file:
-      - '/Unknown_Backend/data/mysql/env.mysql'
+      - './Unknown_Backend/data/mysql/env.mysql'
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
@@ -97,26 +97,26 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - /Devops/data/redis/data:/data
-      - /Devops/data/redis/conf/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./Devops/data/redis/data:/data
+      - ./Devops/data/redis/conf/redis.conf:/usr/local/etc/redis/redis.conf
     restart: always
     networks:
       - docker_network
 
   # Backend API Server
   springboot_api:
-      build:		
-        context: Unknown_Backend/dev	
-        dockerfile: Dockerfile	
-      restart: always		
+      build:
+        context: Unknown_Backend/dev
+        dockerfile: Dockerfile
+      restart: always
       ports:
         - 8080:8080
-      container_name: springboot_api    
+      container_name: springboot_api
       environment:
         SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/unknownDB?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
         SPRING_DATASOURCE_USERNAME: root
         SPRING_DATASOURCE_PASSWORD: 1234
-        SPRING_PROFILES_ACTIVE: dev		
+        SPRING_PROFILES_ACTIVE: dev
       networks:
         - docker_network
 
@@ -130,7 +130,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - /Unknown_Frontend:/usr/src/app
+      - ./Unknown_Frontend:/usr/src/app
     restart: always
     networks:
       - docker_network
