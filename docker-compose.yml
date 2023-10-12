@@ -89,17 +89,8 @@ services:
       - '/data/mysql/data:/var/lib/mysql'
       - '/data/mysql/etc:/etc/mysql/conf.d'
     restart: always
-
-  # postgres:
-  #   image: postgres:latest
-  #   environment:
-  #     POSTGRES_PASSWORD: postgresadmin
-  #     POSTGRES_DB: admindb
-  #   ports:
-  #     - "5432:5432"
-  #   restart: always
-  #   networks:
-  #     - docker_network
+    networks:
+      - docker_network
 
   redis:
     image: redis:latest
@@ -113,34 +104,6 @@ services:
       - docker_network
 
   # Backend API Server
-  # fastapi_api:
-  #   build:
-  #     context: data/python
-  #     dockerfile: Dockerfile
-  #   container_name: api
-  #   working_dir: /code
-  #   command: uvicorn main:app --host 0.0.0.0 --port 5000 --reload
-  #   ports:
-  #     - "5000:5000"
-  #   volumes:
-  #     - /data/python/app:/code
-  #   restart: always
-
-  # django_api:
-  #   build:
-  #     context: data/django_project
-  #     dockerfile: Dockerfile
-  #   container_name: api
-  #   command: >
-  #     sh -c "python manage.py makemigrations &&
-  #           python manage.py migrate &&
-  #           gunicorn --bind 0:5000 config.wsgi:application" 
-  #   ports:
-  #     - "5000:5000"
-  #   restart: always
-  #   networks:
-  #     - docker_network
-    
   springboot_api:
       build:		
         context: Unknown_Backend/dev	
@@ -163,7 +126,7 @@ services:
       context: Unknown_Frontend/
       dockerfile: Dockerfile
     container_name: nextjs_frontend
-    command: npm run dev
+    command: npm run build && npm run dev
     ports:
       - "3000:3000"
     volumes:
