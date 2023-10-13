@@ -12,10 +12,18 @@ public class UserDTO {
     private String profileImage;
     private String interest;
     private String introduction;
-    private int reportCount;
+    private Integer reportCount;
 
     // 일반 생성자
-    public UserDTO(String username,String password, String email,String phoneNumber,String profileImage,String interest,String introduction,int reportCount){
+    public UserDTO(String username,
+                   String password,
+                   String email,
+                   String phoneNumber,
+                   String profileImage,
+                   String interest,
+                   String introduction,
+                   Integer reportCount)
+    {
         this.username = username;
         this.email = email;
         this.password = password;
