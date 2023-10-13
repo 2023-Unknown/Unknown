@@ -1,6 +1,5 @@
 package unknown.backend.dev.config;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,7 +7,11 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+import static java.time.Duration.ofMillis;
 
 @Configuration
 public class RedisConfig {
@@ -44,18 +47,39 @@ public class RedisConfig {
         config.setPassword(PASSWORD);
 
         LettuceClientConfiguration clientConfig = LettuceClientConfiguration.builder()
-                .commandTimeout(java.time.Duration.ofMillis(TIMEOUT))
+                .commandTimeout(ofMillis(TIMEOUT))
                 .build();
 
         return new LettuceConnectionFactory(config, clientConfig);
     }
 
     @Bean
-    public StringRedisTemplate stringRedisConnection(
-            @Qualifier("redisConnectionFactory") RedisConnectionFactory redisConnectionFactory
-    ){
+    public RedisTemplate<String, Object> redisTemplate() {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(redisConnectionFactory());
+
+        // Key : Value 형식으로 사용할 경우 시리얼라이저
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new StringRedisSerializer());
+
+        // Hash를 사용할 경우 시리얼라이저
+        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+        redisTemplate.setHashValueSerializer(new StringRedisSerializer());
+
+        // 모든 경우
+        redisTemplate.setDefaultSerializer(new StringRedisSerializer());
+
+        return redisTemplate;
+    }
+
+    @Bean
+    public StringRedisTemplate stringRedisTemplate() {
         StringRedisTemplate stringRedisTemplate = new StringRedisTemplate();
-        stringRedisTemplate.setConnectionFactory(redisConnectionFactory);
+        stringRedisTemplate.setConnectionFactory(redisConnectionFactory());
+
+        // Key : Value 형식으로 사용할 경우 시리얼라이저
+        stringRedisTemplate.setKeySerializer(new StringRedisSerializer());
+        stringRedisTemplate.setValueSerializer(new StringRedisSerializer());
         return stringRedisTemplate;
     }
 }
