@@ -10,8 +10,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import unknown.backend.dev.common.domain.CoreEntity;
 import unknown.backend.dev.dto.UserDTO;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Setter
 @Getter
@@ -55,6 +53,9 @@ public class User extends CoreEntity {
 
     @Column(name = "is_active", nullable = true, columnDefinition = "boolean DEFAULT true")
     private boolean isActive;
+    // 신고 당한 횟수
+    @Column(name = "report_count", nullable = true, columnDefinition = "int DEFAULT 0")
+    private int reportCount;
 
     @Builder
     public User(String username, String password, String email, String phoneNumber,
@@ -67,6 +68,7 @@ public class User extends CoreEntity {
         this.interest = interest;
         this.introduction = introduction;
         this.isActive = true;
+        this.reportCount = 0;
     }
 
     public boolean isActive() {
@@ -81,11 +83,12 @@ public class User extends CoreEntity {
                 user.getPhoneNumber(),
                 user.getProfileImage(),
                 user.getInterest(),
-                user.getIntroduction());
+                user.getIntroduction(),
+                user.getReportCount());
         return userDTO;
     }
 
-    public static User toEntity(UserDTO userDTO){
+    public static User toEntity(UserDTO userDTO) {
         User user = User.builder()
                 .username(userDTO.getUsername())
                 .password(userDTO.getPassword())

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import unknown.backend.dev.domain.User;
+import unknown.backend.dev.dto.ReportDTO;
 import unknown.backend.dev.dto.UserDTO;
 import unknown.backend.dev.service.UserService;
 
