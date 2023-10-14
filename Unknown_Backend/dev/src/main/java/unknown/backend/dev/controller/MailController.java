@@ -25,7 +25,7 @@ public class MailController {
     @ResponseBody
     @PostMapping("/mail")
     @ApiOperation(value = "메일 전송 API", notes = "메일을 전송합니다.")
-    @ApiImplicitParam(name ="mail", value = "인증번호를 받을 이메일 주소", required = true, dataType = "string", paramType = "path")
+    @ApiImplicitParam(name ="mail", value = "인증번호를 받을 이메일 주소")
     public String MailSend(String mail){
 
         int number = mailService.sendMail(mail);

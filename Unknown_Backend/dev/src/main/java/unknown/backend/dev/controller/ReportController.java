@@ -29,8 +29,8 @@ public class ReportController {
     @PostMapping("/{username}")
     @ApiOperation(value="유저 신고",notes="유저를 신고합니다.")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "username", value = "신고할 유저의 이름", required = true, dataType = "string", paramType = "path"),
-            @ApiImplicitParam(name = "reportDTO", value = "신고할 유저의 정보", required = true, dataType = "ReportDTO", paramType = "body")
+            @ApiImplicitParam(name = "username", value = "신고할 유저의 이름"),
+            @ApiImplicitParam(name = "reportDTO", value = "신고 정보")
     })
     public String reportUser(@PathVariable String username, @RequestBody ReportDTO reportDTO) {
 
