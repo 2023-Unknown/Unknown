@@ -1,5 +1,6 @@
 package unknown.backend.dev.domain;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,15 +15,19 @@ public class ChatRoom {
         WAITING, TALKING, EXIT
     }
     // 방 번호
+    @ApiModelProperty(example = "방 번호")
     private String roomId;
 
     // 유저 제한 기본 값 2
+    @ApiModelProperty(example = "유저 제한 기본 값 2")
     public static final Integer limitUser = 2;
 
     // 연결되어 있는 유저의 수 기본 값 1
+    @ApiModelProperty(example = "연결되어 있는 유저의 수 기본 값 1")
     private Integer connectionUser = 1;
 
     // 방 상태 기본 상태 WAITING
+    @ApiModelProperty(example = "방 상태 기본 상태 WAITING")
     private RoomStatus status = RoomStatus.WAITING;
 
 
