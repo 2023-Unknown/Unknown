@@ -5,6 +5,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import unknown.backend.dev.common.domain.CoreEntity;
@@ -21,40 +23,49 @@ public class User extends CoreEntity {
     @NotBlank
     @Size(max = 255)
     @Column(name = "username", nullable = false, unique = true)
+    @ApiModelProperty(example = "유저 이름")
     private String username;
 
     @NotBlank
     @Size(max = 255)
     @Column(name = "password", nullable = false)
+    @ApiModelProperty(example = "유저 비밀번호")
     private String password;
 
     @NotBlank
     @Email
     @Size(max = 255)
     @Column(name = "email", nullable = false, unique = true)
+    @ApiModelProperty(example = "유저 이메일")
     private String email;
 
     @NotBlank
     @Size(max = 255)
     @Column(name = "phone_number", nullable = false, unique = true)
+    @ApiModelProperty(example = "유저 전화번호")
     private String phoneNumber;
 
     @Size(max = 255)
     @Column(name = "profile_image_url", nullable = true, columnDefinition = "varchar(255) DEFAULT 'null'")
+    @ApiModelProperty(example = "유저 프로필 사진 URL")
     private String profileImage;
 
     @Size(max = 255)
     @Column(name = "interest", nullable = true, columnDefinition = "varchar(255) DEFAULT 'null'")
+    @ApiModelProperty(example = "유저 관심사")
     private String interest;
 
     @Size(max = 255)
     @Column(name = "introduction", nullable = true, columnDefinition = "varchar(255) DEFAULT 'null'")
+    @ApiModelProperty(example = "유저 소개")
     private String introduction;
 
     @Column(name = "is_active", nullable = true, columnDefinition = "boolean DEFAULT true")
+    @ApiModelProperty(example = "유저 신고 횟수")
     private boolean isActive;
     // 신고 당한 횟수
     @Column(name = "report_count", nullable = true, columnDefinition = "int DEFAULT 0")
+    @ApiModelProperty(example = "유저 신고 횟수")
     private int reportCount;
 
     @Builder
