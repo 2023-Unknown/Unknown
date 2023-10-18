@@ -1,10 +1,8 @@
 'use client';
 import Image from 'next/image';
 import type { AppProps } from 'next/app';
-import { RecoilRoot } from 'recoil';
-import Link from 'next/link';
 
-export default function Home({ Component, pageProps }: AppProps) {
+export default function Home() {
 	return (
 		<main className='flex min-h-screen flex-col items-center justify-between p-24'>
 			<div className='z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex'>
@@ -18,9 +16,6 @@ export default function Home({ Component, pageProps }: AppProps) {
 						priority
 					/>
 				</div>
-				{/* <Link href="/">
-        <a>Home</a>
-      </Link> */}
 			</div>
 		</main>
 	);
