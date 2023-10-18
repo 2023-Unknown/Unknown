@@ -52,15 +52,29 @@ public class UserService{
         }
 
     }
+
+    public boolean isExist(String method, String value) {
+        switch (method) {
+            case "name":
+                return userRepository.existsByUsername(value);
+            case "email":
+                return userRepository.existsByEmail(value);
+            case "phoneNumber":
+                return userRepository.existsByPhoneNumber(value);
+            default:
+                throw new UserNotFoundException("해당 유저가 존재하지 않습니다.");
+        }
+    }
     public User saveUser(User user) {
         userRepository.save(user);
         return user;
     }
     @Transactional
     public User createUser(UserDTO userDTO) {
-        User user = findByMethodAndValue("name", userDTO.getUsername());
-        userRepository.save(user);
-        return user;
+        if (isExist("name", userDTO.getUsername())) {
+            throw new UserNotFoundException("이미 존재하는 유저입니다.");
+        }
+        return saveUser(User.toEntity(userDTO));
     }
 
     @Transactional
@@ -102,5 +116,9 @@ public class UserService{
         user.preRemove();
         userRepository.save(user);
         return user;
+    }
+
+    public void deleteAll() {
+        userRepository.deleteAll();
     }
 }
