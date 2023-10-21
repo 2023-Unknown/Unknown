@@ -17,11 +17,24 @@ public class TranslationService {
     @Value("${deepl.api.key}")  // application.properties에서 DeepL API 키
     private String apiKey;
     public String translateToKorean(String inputText) {
-        String apiUrl = "https://api.deepl.com/v2/translate";
+        String apiUrl = "https://api-free.deepl.com/v2/translate";
         String targetLanguage = "KO";
 
         RestTemplate restTemplate = new RestTemplate();
         // 수정 필요
+        String translatedText = restTemplate.postForObject(apiUrl,
+                new TranslationRequest(inputText, targetLanguage),
+                TranslationResponse.class, apiKey).getTranslations().get(0).getText();
+
+        return translatedText;
+    }
+
+    public String translateToEnglish(String inputText) {
+        String apiUrl = "https://api-free.deepl.com/v2/translate";
+        String targetLanguage = "EN";
+
+        RestTemplate restTemplate = new RestTemplate();
+
         String translatedText = restTemplate.postForObject(apiUrl,
                 new TranslationRequest(inputText, targetLanguage),
                 TranslationResponse.class, apiKey).getTranslations().get(0).getText();
