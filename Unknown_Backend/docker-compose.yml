@@ -17,16 +17,16 @@ services:
       - unknown_network
   
   # springboot:
-  #   build:		
+  #   build:
   #     context: dev
-  #     dockerfile: Dockerfile	
-  #   restart: always		
-  #   depends_on:		
+  #     dockerfile: Dockerfile
+  #   restart: always
+  #   depends_on:
   #     - mysql
   #   ports:
   #     - 8080:8080
   #   container_name: apiServer
-  #   environment:	
+  #   environment:
   #     SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/unknownDB?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
   #     SPRING_DATASOURCE_USERNAME: root
   #     SPRING_DATASOURCE_PASSWORD: 1234
