@@ -1,5 +1,6 @@
 package unknown.backend.dev.domain;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,13 +10,30 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 public class ChatRoom {
+    // 방 상태 enum class (대기, 대화중, 종료)
+    public enum RoomStatus {
+        WAITING, TALKING, EXIT
+    }
+    // 방 번호
+    @ApiModelProperty(example = "방 번호")
     private String roomId;
-    private String roomName;
 
-    public static ChatRoom create(String roomName) {
+    // 유저 제한 기본 값 2
+    @ApiModelProperty(example = "유저 제한 기본 값 2")
+    public static final Integer limitUser = 2;
+
+    // 연결되어 있는 유저의 수 기본 값 1
+    @ApiModelProperty(example = "연결되어 있는 유저의 수 기본 값 1")
+    private Integer connectionUser = 1;
+
+    // 방 상태 기본 상태 WAITING
+    @ApiModelProperty(example = "방 상태 기본 상태 WAITING")
+    private RoomStatus status = RoomStatus.WAITING;
+
+
+    public static ChatRoom create() {
         ChatRoom room = new ChatRoom();
         room.roomId = UUID.randomUUID().toString();
-        room.roomName = roomName;
         return room;
     }
 }

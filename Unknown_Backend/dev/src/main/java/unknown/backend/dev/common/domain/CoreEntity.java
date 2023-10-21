@@ -17,10 +17,10 @@ import java.time.LocalDateTime;
 @EntityListeners({AuditingEntityListener.class})
 public class CoreEntity {
     @CreatedDate
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
-    private LocalDate updatedAt;
+    private LocalDateTime updatedAt;
 
     private LocalDateTime deletedAt;
     @PreRemove
