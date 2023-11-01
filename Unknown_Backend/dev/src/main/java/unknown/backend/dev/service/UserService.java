@@ -22,8 +22,9 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class UserService{
-    @Autowired
+
     private UserRepository userRepository;
+    @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -58,9 +59,18 @@ public class UserService{
     }
     @Transactional
     public User createUser(UserDTO userDTO) {
-        User user = findByMethodAndValue("name", userDTO.getUsername());
-        userRepository.save(user);
-        return user;
+
+        User createdUser = User.builder()
+                .username(userDTO.getUsername())
+                .password(userDTO.getPassword())
+                .email(userDTO.getEmail())
+                .phoneNumber(userDTO.getPhoneNumber())
+                .profileImage(userDTO.getProfileImage())
+                .interest(userDTO.getInterest())
+                .introduction(userDTO.getIntroduction())
+                .build();
+        userRepository.save(createdUser);
+        return createdUser;
     }
 
     @Transactional
