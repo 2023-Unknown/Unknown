@@ -10,6 +10,6 @@ services:
    - .:/app
   command: npm run dev
   ports:
-   - '3000:3000'
+   - '3300:3300'
   environment:
    NODE_ENV: development
