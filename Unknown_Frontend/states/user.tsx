@@ -3,12 +3,26 @@
 import { atom, selector, useRecoilState, useRecoilValue } from 'recoil';
 
 interface CreateUser {
+	email: string;
+	interest: string;
+	introduction: string;
+	password?: string;
+	phoneNumber: string;
+	profileImage: string;
+	reportCount: string;
 	username: string;
-	useremail: string;
-	userpassword?: string;
 }
 
 export const userState = atom<CreateUser>({
 	key: 'user',
-	default: { username: '', useremail: '', userpassword: '' },
+	default: {
+		username: '',
+		email: '',
+		password: '',
+		interest: '',
+		introduction: '',
+		phoneNumber: '',
+		profileImage: '',
+		reportCount: '',
+	},
 });
