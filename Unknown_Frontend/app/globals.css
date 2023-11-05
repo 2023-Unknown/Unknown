@@ -4,143 +4,139 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Kanit';
-  src: url('../font/Kanit/Kanit-Light.ttf') format('truetype');
+	font-family: 'Kanit';
+	src: url('../font/Kanit/Kanit-Light.ttf') format('truetype');
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }
 
 body {
-  background-color: rgb(29, 39, 66); 
-  font-family: 'Kanit';
+	background-color: rgb(29, 39, 66);
+	font-family: 'Kanit';
 }
 
 .StartTitle {
-  font-weight: 600;
-  font-size: 2.5rem;
-  margin-left: 3rem;
-  width:50rem;
-  color:white;
-  align-items: center; 
+	font-weight: 600;
+	font-size: 2.5rem;
+	margin-left: 3rem;
+	width: 50rem;
+	color: white;
+	align-items: center;
 }
 
 .StartInfo {
-  margin-top: 5rem;
-  margin-left: 19rem;
-  width:50rem;
-  font-size: 1.1rem;
-  font-weight: 200;
-  color:white;
-  animation: fadeIn 3s;
-  align-items: center; 
+	margin-top: 5rem;
+	margin-left: 19rem;
+	width: 50rem;
+	font-size: 1.1rem;
+	font-weight: 200;
+	color: white;
+	animation: fadeIn 3s;
+	align-items: center;
 }
 
-.ButtonBox{
-  margin-left: 40rem;
-  margin-top: 5rem;
+.ButtonBox {
+	margin-left: 40rem;
+	margin-top: 5rem;
 }
 
-.StartButton{
-  font-weight:600;
-  color: white;
-  animation: fadeIn 3s;
-  padding: 1rem;
-  border-radius: 1rem;
-  border: 1.3px solid;
-  align-items: center;
-  transition: transform 0.3s ease;
+.StartButton {
+	font-weight: 600;
+	color: white;
+	animation: fadeIn 3s;
+	padding: 1rem;
+	border-radius: 1rem;
+	border: 1.3px solid;
+	align-items: center;
+	transition: transform 0.3s ease;
 }
 
 .StartButton:hover {
-  transform: scale(1.1); 
+	transform: scale(1.1);
 }
 
-.LoadingPage{
-  margin-top: -45rem;
+.LoadingPage {
+	margin-left: auto;
 }
 
 .MainTitle {
-  font-family: 'Kanit';
-  display: flex;
-  align-items: center; 
-  margin-top: 1rem;
-  margin-left: 2.5rem;
-  margin-bottom: 11rem;
-  font-size: 5rem;
-  color: white;
+	font-family: 'Kanit';
+	display: flex;
+	align-items: center;
+	margin-top: 1rem;
+	margin-left: 2.5rem;
+	margin-bottom: 11rem;
+	font-size: 5rem;
+	color: white;
 }
 
 .MainInfo {
-  font-family: 'Kanit';
-  margin-top: 0rem;
-  margin-left: 8rem;
-  font-size: 3rem;
-  font-weight: 300;
-  color: white;
+	font-family: 'Kanit';
+	margin-top: 0rem;
+	margin-left: 8rem;
+	font-size: 3rem;
+	font-weight: 300;
+	color: white;
 }
 
 .MainBox {
-  margin-left: 12rem;
-  width: 30rem;
-  align-items: center;
+	margin-left: 12rem;
+	width: 30rem;
+	align-items: center;
 }
 
 .SubInfo {
-  font-family: 'Kanit';
-  margin-top: 5rem;
-  font-size: 1rem;
-  color: white;
-  font-weight: 50;
+	font-family: 'Kanit';
+	margin-top: 5rem;
+	font-size: 1rem;
+	color: white;
+	font-weight: 50;
 }
 
 .InputBox {
-  width: 50rem;
-  margin-left: 45rem;
-  margin-top: -35rem;
+	width: 50rem;
+	margin-left: 45rem;
+	margin-top: -35rem;
 }
 
 .Dice {
-  margin-top: 0.2rem;
-  margin-right: 1rem; 
-  width: 5rem;
+	margin-top: 0.2rem;
+	margin-right: 1rem;
+	width: 5rem;
 }
 
 .LogoTitle {
-  display: flex;
-  align-items: center; 
-  margin-top: 1rem;
-  margin-left: 2.5rem;
-  margin-bottom: 15rem;
-  font-size: 2rem;
-  color: white;
+	display: flex;
+	align-items: center;
+	margin-top: 1rem;
+	margin-left: 2.5rem;
+	margin-bottom: 15rem;
+	font-size: 2rem;
+	color: white;
 }
 
 .LogoSignup {
-  display: flex;
-  align-items: center; 
-  margin-bottom: 3rem;
-  font-size: 1.5rem;
-  font-weight: 500;
-  color: black;
+	display: flex;
+	align-items: center;
+	margin-bottom: 3rem;
+	font-size: 1.5rem;
+	font-weight: 500;
+	color: black;
 }
-
 
 .LogoSignupPic {
-  width: 2rem;
+	width: 2rem;
 }
-
 
 .LogoPic {
-  margin-top: 0.2rem;
-  margin-right: 1rem; 
-  width: 3rem;
+	margin-top: 0.2rem;
+	margin-right: 1rem;
+	width: 3rem;
 }
-
-
