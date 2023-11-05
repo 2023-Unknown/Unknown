@@ -1,11 +1,10 @@
-import React from 'react'
-import Three from '../../components/Three'
-
+import React from 'react';
+import { Spinner } from '@/src/app/components/Spinner';
 
 export default function page() {
-  return (
-    <div className='LoadingPage'>
-      <Three/>
-      </div>
-  )
+	return (
+		<>
+			<Spinner />
+		</>
+	);
 }
