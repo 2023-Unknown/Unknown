@@ -1,2 +1,9 @@
 .vscode
+.idea
 mysql/
+nginx/logs/
+Devops/grafana/grafana.db
+Devops/grafana/plugins/
+Devops/prometheus/config/
+Devops/prometheus/volume/
+Devops/redis/data/
