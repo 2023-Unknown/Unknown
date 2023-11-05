@@ -17,7 +17,7 @@ export default function SignUp(props: any) {
 		introduction: '',
 		phoneNumber: '',
 		profileImage: '',
-		reportCount: '',
+		reportCount: 0,
 	});
 	const setUser = useSetRecoilState(userState);
 

@@ -8,7 +8,7 @@ export const createUser = async (formData: {
 	password: string;
 	phoneNumber: string;
 	profileImage: string;
-	reportCount: string;
+	reportCount: number;
 	username: string;
 }) => {
 	console.log(formData);

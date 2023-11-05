@@ -9,7 +9,7 @@ interface CreateUser {
 	password?: string;
 	phoneNumber: string;
 	profileImage: string;
-	reportCount: string;
+	reportCount: number;
 	username: string;
 }
 
@@ -23,6 +23,6 @@ export const userState = atom<CreateUser>({
 		introduction: '',
 		phoneNumber: '',
 		profileImage: '',
-		reportCount: '',
+		reportCount: 0,
 	},
 });
