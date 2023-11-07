@@ -11,12 +11,8 @@ export const createUser = async (formData: {
 	reportCount: number;
 	username: string;
 }) => {
-	console.log(formData);
 	const response = await axios.post('/users/create', formData);
 	console.log(response.data);
-	// const { username, useremail, userpassword } = response.data;
-	// localStorage.setItem("token", token); // 로컬 스토리지에 토큰 저장
-	//return { username, useremail, userpassword };
 };
 
 /* 로그아웃 */

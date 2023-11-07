@@ -20,17 +20,19 @@ export default function SignUp(props: any) {
 		reportCount: 0,
 	});
 	const setUser = useSetRecoilState(userState);
-
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
 		setFormData({ ...formData, [name]: value });
 	};
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		// phoneNumber는 서버에서 공백으로 받지 못해서 강제로 email 정보 그대로 입력
+		setFormData({ ...formData, phoneNumber: formData.email });
 		e.preventDefault();
+
 		try {
 			const signUpUser = await createUser(formData);
-			// setUser(signUpUser);
+			modalVisible();
 		} catch (error) {
 			console.error(error); // 이 부분은 에러처리를 원하는 방식으로 변경하실 수 있습니다.
 		}
@@ -72,7 +74,7 @@ export default function SignUp(props: any) {
 						/>
 						<button
 							type='submit'
-							// onClick={modalVisible} // 모달 닫기 버튼
+							//onClick={modalVisible} // 모달 닫기 버튼
 							className='bg-blue-800 font-semibold text-white py-2 px-40 rounded-md hover:bg-blue-600 ml-1 mt-11'>
 							Signup
 						</button>
