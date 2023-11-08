@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Logo from './SignupLogo';
 import { userState } from '../states/user';
-import { createUser } from '../apis/user';
+import { createUser, certifyEmail } from '../apis/user';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 export default function SignUp(props: any) {
@@ -19,7 +19,11 @@ export default function SignUp(props: any) {
 		profileImage: '',
 		reportCount: 0,
 	});
+	const [code, setCode] = useState('');
+	const [returnCode, setReturnCode] = useState('');
+
 	const setUser = useSetRecoilState(userState);
+
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
 		setFormData({ ...formData, [name]: value });
@@ -31,10 +35,26 @@ export default function SignUp(props: any) {
 		e.preventDefault();
 
 		try {
-			const signUpUser = await createUser(formData);
-			modalVisible();
+			// const signUpUser = await createUser(formData);
+			// modalVisible();
+			const authenticateEmail = await certifyEmail(formData.email);
+			setReturnCode(authenticateEmail);
 		} catch (error) {
 			console.error(error); // 이 부분은 에러처리를 원하는 방식으로 변경하실 수 있습니다.
+		}
+	};
+
+	const handleCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { name, value } = e.target;
+		setCode(value);
+	};
+
+	const checkCodeAndCreateUser = async () => {
+		console.log(returnCode);
+		console.log(code);
+		if (returnCode == code) {
+			const signUpUser = await createUser(formData);
+			modalVisible();
 		}
 	};
 
@@ -79,10 +99,20 @@ export default function SignUp(props: any) {
 							Signup
 						</button>
 					</form>
+
+					<input
+						type='text'
+						placeholder='Authentication Code'
+						value={code}
+						name='code'
+						onChange={handleCodeChange}
+						className='border w-full h-12 px-3 py-4 mt-2 hover:outline-none focus:outline-none focus:ring-indigo-600 focus:ring-2 rounded-md'
+					/>
+
 					<button
-						onClick={modalVisible} // 모달 닫기 버튼
+						onClick={checkCodeAndCreateUser} // 모달 닫기 버튼
 						className='bg-blue-800 font-semibold text-white py-2 px-40 rounded-md hover:bg-blue-600 ml-1 mt-6'>
-						Cancel
+						Certify Email
 					</button>
 				</div>
 			</div>
