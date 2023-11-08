@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import unknown.backend.dev.domain.User;
 import unknown.backend.dev.dto.ReportDTO;
@@ -28,16 +27,13 @@ public class ReportController {
     }
     @PostMapping("/{username}")
     @ApiOperation(value="유저 신고",notes="유저를 신고합니다.")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "username", value = "신고할 유저의 이름"),
-            @ApiImplicitParam(name = "reportDTO", value = "신고 정보")
-    })
-    public String reportUser(@PathVariable String username, @RequestBody ReportDTO reportDTO) {
+    @ApiImplicitParam(name = "reportDTO", value = "신고 정보")
+    public boolean reportUser(@RequestBody ReportDTO reportDTO) {
 
-        User user = userService.findByMethodAndValue("name", username);
+        User user = userService.findByEmail(reportDTO.getReporterEmail());
         if(user.isActive()){
             return reportService.reportUser(reportDTO);
         }
-        return reportDTO.getReported();
+        return false;
     }
 }
