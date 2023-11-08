@@ -5,16 +5,15 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import unknown.backend.dev.common.domain.CoreEntity;
-import unknown.backend.dev.dto.UserDTO;
+import unknown.backend.dev.dto.UserCreateDTO;
 
 @Entity
-@Setter
 @Getter
+@Setter
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "users")
 @NoArgsConstructor
@@ -39,27 +38,6 @@ public class User extends CoreEntity {
     @ApiModelProperty(example = "유저 이메일")
     private String email;
 
-    @NotBlank
-    @Size(max = 255)
-    @Column(name = "phone_number", nullable = false, unique = true)
-    @ApiModelProperty(example = "유저 전화번호")
-    private String phoneNumber;
-
-    @Size(max = 255)
-    @Column(name = "profile_image_url", nullable = true, columnDefinition = "varchar(255) DEFAULT 'null'")
-    @ApiModelProperty(example = "유저 프로필 사진 URL")
-    private String profileImage;
-
-    @Size(max = 255)
-    @Column(name = "interest", nullable = true, columnDefinition = "varchar(255) DEFAULT 'null'")
-    @ApiModelProperty(example = "유저 관심사")
-    private String interest;
-
-    @Size(max = 255)
-    @Column(name = "introduction", nullable = true, columnDefinition = "varchar(255) DEFAULT 'null'")
-    @ApiModelProperty(example = "유저 소개")
-    private String introduction;
-
     @Column(name = "is_active", nullable = true, columnDefinition = "boolean DEFAULT true")
     @ApiModelProperty(example = "유저 신고 횟수")
     private boolean isActive;
@@ -69,15 +47,10 @@ public class User extends CoreEntity {
     private int reportCount;
 
     @Builder
-    public User(String username, String password, String email, String phoneNumber,
-            String profileImage, String interest, String introduction) {
+    public User(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.profileImage = profileImage;
-        this.interest = interest;
-        this.introduction = introduction;
         this.isActive = true;
         this.reportCount = 0;
     }
@@ -86,30 +59,21 @@ public class User extends CoreEntity {
         return this.isActive;
     }
 
-    public static UserDTO toDTO(User user) {
-        UserDTO userDTO = new UserDTO(
-                user.getUsername(),
-                user.getPassword(),
-                user.getEmail(),
-                user.getPhoneNumber(),
-                user.getProfileImage(),
-                user.getInterest(),
-                user.getIntroduction(),
-                user.getReportCount());
-        return userDTO;
+    public static UserCreateDTO toDTO(User user) {
+
+        return UserCreateDTO.builder()
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .email(user.getEmail())
+                .build();
     }
 
-    public static User toEntity(UserDTO userDTO) {
-        User user = User.builder()
-                .username(userDTO.getUsername())
-                .password(userDTO.getPassword())
-                .email(userDTO.getEmail())
-                .introduction(userDTO.getIntroduction())
-                .interest(userDTO.getInterest())
-                .phoneNumber(userDTO.getPhoneNumber())
-                .profileImage(userDTO.getProfileImage())
-                .build();
+    public static User toModel(UserCreateDTO userCreateDTO) {
 
-        return user;
+        return User.builder()
+                .username(userCreateDTO.getUsername())
+                .password(userCreateDTO.getPassword())
+                .email(userCreateDTO.getEmail())
+                .build();
     }
 }
