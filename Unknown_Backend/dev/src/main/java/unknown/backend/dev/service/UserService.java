@@ -6,11 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import unknown.backend.dev.domain.User;
-import unknown.backend.dev.dto.UserCreateDTO;
-import unknown.backend.dev.dto.UserUpdateDTO;
-import unknown.backend.dev.exception.NotAllowedAccessException;
-import unknown.backend.dev.exception.UserAlreadyExistsException;
-import unknown.backend.dev.exception.UserNotFoundException;
+import unknown.backend.dev.dto.*;
+import unknown.backend.dev.exception.*;
 import unknown.backend.dev.repository.UserRepository;
 
 import javax.persistence.EntityManager;
@@ -56,14 +53,18 @@ public class UserService{
     @Transactional
     public User createUser(UserCreateDTO userCreateDTO) {
         // 이메일 중복 확인
-        if (findByEmail(userCreateDTO.getEmail()) == null) throw new UserAlreadyExistsException();
-        User newUser = User.builder()
-                .username(userCreateDTO.getUsername())
-                .password(userCreateDTO.getPassword())
-                .email(userCreateDTO.getEmail())
-                .build();
-        saveUser(newUser);
-        return newUser;
+        try{
+            findByEmail(userCreateDTO.getEmail());
+        }catch (UserNotFoundException e) {
+            User newUser = User.builder()
+                    .username(userCreateDTO.getUsername())
+                    .password(userCreateDTO.getPassword())
+                    .email(userCreateDTO.getEmail())
+                    .build();
+            saveUser(newUser);
+            return newUser;
+        }
+        return null;
     }
 
     @Transactional
@@ -74,6 +75,15 @@ public class UserService{
         updatedUser.setPassword(userUpdateDTO.getPassword());
         updatedUser.setEmail(userUpdateDTO.getEmail());
         return updatedUser;
+    }
+
+    @Transactional
+    public User reportUser(String email){
+        log.info("신고자: " + email);
+        User user = findByEmail(email);
+        User reportedUser = em.find(User.class,user.getId());
+        reportedUser.setReportCount(reportedUser.getReportCount() + 1);
+        return reportedUser;
     }
 
     public User deleteUser(String email){

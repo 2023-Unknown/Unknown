@@ -29,15 +29,13 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/detail/{method}/{value}")
+    @GetMapping("/detail/{email}")
     @ApiOperation(value="특정 유저 조회",notes="유저 정보를 조회합니다.")
-    @ApiImplicitParam(name = "email", value = "이메이",paramType = "path")
+    @ApiImplicitParam(name = "email", value = "이메일")
     public ResponseEntity<User> getUserDetail(@PathVariable String email) {
         User user = userService.findByEmail(email);
         return ResponseEntity.ok(user);
     }
-
-    @PostMapping
     @GetMapping("/list")
     @ApiOperation(value="유저 리스트 조회",notes="유저 리스트를 조회합니다.")
     public String getUserList() {

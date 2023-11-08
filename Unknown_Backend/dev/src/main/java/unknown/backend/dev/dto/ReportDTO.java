@@ -4,8 +4,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDate;
-
 @Getter
 @Builder
 public class ReportDTO {
@@ -17,7 +15,4 @@ public class ReportDTO {
 
     @ApiModelProperty(example = "신고 사유")
     private final String reason;
-
-    @ApiModelProperty(example = "신고 날짜")
-    private final LocalDate reportDate;
 }
