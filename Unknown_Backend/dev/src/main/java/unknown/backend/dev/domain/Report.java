@@ -7,8 +7,8 @@ import lombok.ToString;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -18,27 +18,28 @@ import java.time.LocalDateTime;
 @ToString
 public class Report {
     @Id
-    @Column(name="id")
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Id", nullable = false)
+    private Long Id;
 
     @Column(name = "reporter", nullable = false)
-    private String reporter;
+    @Email
+    private String reporterEmail;
 
     @Column(name = "reported", nullable = false)
-    private String reported;
+    @Email
+    private String reportedEmail;
 
     @Column(name = "reason", nullable = false)
     private String reason;
 
     @Column(name = "report_date", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDate reportDate;
-
     @Builder
-    public Report(String reporter, String reported, String reason, LocalDate reportDate) {
-        this.reporter = reporter;
-        this.reported = reported;
+    public Report(String reporterEmail, String reportedEmail, String reason) {
+        this.reporterEmail = reporterEmail;
+        this.reportedEmail = reportedEmail;
         this.reason = reason;
-        this.reportDate = reportDate;
+        this.reportDate = LocalDate.now();
     }
 }
