@@ -54,7 +54,7 @@ public class ChatRoomController {
     @GetMapping("/room/{roomId}")
     @ResponseBody
     @ApiOperation(value="채팅방 정보",notes="채팅방 정보를 반환합니다.")
-    @ApiImplicitParam(name = "roomId", value = "채팅방 아이디")
+    @ApiImplicitParam(name = "roomId", value = "채팅방 아이디",paramType = "path")
     public ChatRoom roomInfo(@PathVariable String roomId) {
         return chatService.findRoomById(roomId);
     }
