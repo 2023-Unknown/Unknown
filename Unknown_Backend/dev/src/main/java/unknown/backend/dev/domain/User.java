@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import unknown.backend.dev.common.domain.CoreEntity;
-import unknown.backend.dev.dto.UserCreateDTO;
+import unknown.backend.dev.dto.RegisterDTO;
 
 @Entity
 @Getter
@@ -46,6 +46,11 @@ public class User extends CoreEntity {
     @ApiModelProperty(example = "유저 신고 횟수")
     private int reportCount;
 
+    @Column(name = "role", nullable = true, columnDefinition = "varchar(255) DEFAULT 'ROLE_USER'")
+    @Enumerated(value = EnumType.STRING)
+    @ApiModelProperty(example = "유저 권한")
+    private UserRole role;
+
     @Builder
     public User(String username, String password, String email) {
         this.username = username;
@@ -59,21 +64,21 @@ public class User extends CoreEntity {
         return this.isActive;
     }
 
-    public static UserCreateDTO toDTO(User user) {
+    public static RegisterDTO toDTO(User user) {
 
-        return UserCreateDTO.builder()
+        return RegisterDTO.builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
                 .email(user.getEmail())
                 .build();
     }
 
-    public static User toModel(UserCreateDTO userCreateDTO) {
+    public static User toModel(RegisterDTO registerDTO) {
 
         return User.builder()
-                .username(userCreateDTO.getUsername())
-                .password(userCreateDTO.getPassword())
-                .email(userCreateDTO.getEmail())
+                .username(registerDTO.getUsername())
+                .password(registerDTO.getPassword())
+                .email(registerDTO.getEmail())
                 .build();
     }
 }

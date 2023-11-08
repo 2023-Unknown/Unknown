@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import unknown.backend.dev.domain.User;
-import unknown.backend.dev.dto.UserCreateDTO;
 import unknown.backend.dev.dto.UserUpdateDTO;
 import unknown.backend.dev.service.UserService;
 
@@ -31,7 +30,7 @@ public class UserController {
 
     @GetMapping("/detail/{email}")
     @ApiOperation(value="특정 유저 조회",notes="유저 정보를 조회합니다.")
-    @ApiImplicitParam(name = "email", value = "이메일")
+    @ApiImplicitParam(name = "email", value = "이메일",paramType = "path")
     public ResponseEntity<User> getUserDetail(@PathVariable String email) {
         User user = userService.findByEmail(email);
         return ResponseEntity.ok(user);
@@ -42,15 +41,22 @@ public class UserController {
         return userService.findAll().toString();
     }
 
-    @PostMapping("/create")
-    @ApiOperation(value="유저 생성",notes="유저를 생성합니다.")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "userCreateDTO", value = "생성할 유저의 정보")
-    })
-    public ResponseEntity<User> createUser(@RequestBody UserCreateDTO userCreateDTO) {
-        User user = userService.createUser(userCreateDTO);
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
-    }
+//    @PostMapping("/login")
+//    @ApiOperation(value="유저 로그인",notes="유저를 로그인합니다.")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "email", value = "이메일",paramType = "query"),
+//            @ApiImplicitParam(name = "password", value = "비밀번호",paramType = "query")
+//    })
+
+//    @PostMapping("/create")
+//    @ApiOperation(value="유저 생성",notes="유저를 생성합니다.")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "userCreateDTO", value = "생성할 유저의 정보")
+//    })
+//    public ResponseEntity<User> createUser(@RequestBody RegisterDTO registerDTO) {
+//        User user = userService.registerUser(registerDTO);
+//        return new ResponseEntity<>(user, HttpStatus.CREATED);
+//    }
 
     @PutMapping("/update/{username}")
     @ApiOperation(value="유저 수정",notes="유저 정보를 수정합니다.")
@@ -65,7 +71,7 @@ public class UserController {
 
     @DeleteMapping("/delete/{username}")
     @ApiOperation(value="유저 삭제",notes="유저를 삭제합니다.")
-    @ApiImplicitParam(name = "username", value = "삭제할 유저의 이름",paramType = "query")
+    @ApiImplicitParam(name = "username", value = "삭제할 유저의 이름",paramType = "path")
     public ResponseEntity<User> deleteUser(@PathVariable String username) {
         User user = userService.deleteUser(username);
         return new ResponseEntity<>(user, HttpStatus.OK);
