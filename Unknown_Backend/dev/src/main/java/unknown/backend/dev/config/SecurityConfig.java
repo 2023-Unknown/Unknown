@@ -39,6 +39,7 @@ public class SecurityConfig {
                 .and()
                 .addFilterBefore(new JwtTokenFilter(userService, secretKey), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
+                .antMatchers("/api/v1/chat/room/enter").authenticated()
                 .antMatchers("/jwt-login/info").authenticated()
                 .antMatchers("/jwt-login/admin/**").hasAuthority(UserRole.ROLE_ADMIN.name())
                 .and().build();

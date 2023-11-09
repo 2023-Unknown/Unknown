@@ -4,7 +4,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import unknown.backend.dev.domain.ChatRoom;
+import unknown.backend.dev.domain.User;
 import unknown.backend.dev.service.ChatService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,7 +41,11 @@ public class ChatRoomController {
     @GetMapping("/room/enter")
     @ResponseBody
     @ApiOperation(value="랜덤 채팅방 입장",notes="랜덤 채팅방에 입장합니다.")
-    public ChatRoom startChatting() {
+    public ChatRoom startChatting(Authentication auth) {
+        User chattingUser = chatService.getLoginUserByEmail(auth.getName());
+        if (chattingUser == null) {
+            return null;
+        }
         return chatService.startRandomChatting();
     }
 

@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService{
 
-    private UserRepository userRepository;
+    private static UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
     private final EntityManager em;
     @Autowired
@@ -46,7 +46,7 @@ public class UserService{
         userRepository.save(user);
     }
 
-    public User findByEmail(String email) {
+    public static User findByEmail(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(UserNotFoundException::new);
         if(!user.isActive()){
