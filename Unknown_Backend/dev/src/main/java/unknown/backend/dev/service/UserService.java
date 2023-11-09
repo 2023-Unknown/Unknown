@@ -56,9 +56,9 @@ public class UserService{
     }
 
 
-    public void registerUser(RegisterDTO registerDTO) {
+    public void registerUser(RegisterRequest registerRequest) {
         // 이메일 중복 확인
-        userRepository.save(registerDTO.toEntity(encoder.encode(registerDTO.getPassword())));
+        userRepository.save(registerRequest.toEntity(encoder.encode(registerRequest.getPassword())));
     }
 
     public User updateUser(String email, UserUpdateDTO userUpdateDTO){
@@ -92,21 +92,14 @@ public class UserService{
 
     public User login(LoginRequest loginRequest) {
         Optional<User> optionalUser = userRepository.findByEmail(loginRequest.getLoginEmail());
-        if(optionalUser.isEmpty()) {
+        if (optionalUser.isEmpty()) {
             return null;
         }
         User user = optionalUser.get();
-        if(!encoder.matches(loginRequest.getPassword(), user.getPassword())) {
+        if (!encoder.matches(loginRequest.getPassword(), user.getPassword())) {
             return null;
         }
         return user;
-    }
-    public User getLoginUserById(Long userId) {
-        if(userId == null) return null;
-
-        Optional<User> optionalUser = userRepository.findById(userId);
-        return optionalUser.orElse(null);
-
     }
     public User getLoginUserByEmail(String Email) {
         if(Email == null) return null;

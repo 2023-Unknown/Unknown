@@ -5,11 +5,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import unknown.backend.dev.domain.User;
+import unknown.backend.dev.domain.UserRole;
 
 @Getter
 @Setter
 @Builder
-public class RegisterDTO {
+public class RegisterRequest {
     @ApiModelProperty(example = "유저 이름")
     private final String username;
     @ApiModelProperty(example = "유저 비밀번호")

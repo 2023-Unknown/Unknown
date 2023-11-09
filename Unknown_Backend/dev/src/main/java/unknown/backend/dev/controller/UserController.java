@@ -10,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import unknown.backend.dev.Util.JwtTokenUtil;
 import unknown.backend.dev.domain.User;
+import unknown.backend.dev.dto.LoginRequest;
+import unknown.backend.dev.dto.RegisterRequest;
 import unknown.backend.dev.dto.UserUpdateDTO;
 import unknown.backend.dev.service.UserService;
 
@@ -41,22 +44,33 @@ public class UserController {
         return userService.findAll().toString();
     }
 
-//    @PostMapping("/login")
-//    @ApiOperation(value="유저 로그인",notes="유저를 로그인합니다.")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "email", value = "이메일",paramType = "query"),
-//            @ApiImplicitParam(name = "password", value = "비밀번호",paramType = "query")
-//    })
+    @PostMapping("/login")
+    public String login(@RequestBody LoginRequest loginRequest) {
 
-//    @PostMapping("/create")
-//    @ApiOperation(value="유저 생성",notes="유저를 생성합니다.")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "userCreateDTO", value = "생성할 유저의 정보")
-//    })
-//    public ResponseEntity<User> createUser(@RequestBody RegisterDTO registerDTO) {
-//        User user = userService.registerUser(registerDTO);
-//        return new ResponseEntity<>(user, HttpStatus.CREATED);
-//    }
+        User user = userService.login(loginRequest);
+
+        // 로그인 아이디나 비밀번호가 틀린 경우 global error return
+        if(user == null) {
+            return"로그인 아이디 또는 비밀번호가 틀렸습니다.";
+        }
+
+        // 로그인 성공 => Jwt Token 발급
+        String secretKey = "my-secret-key-123123";
+        long expireTimeMs = 1000 * 60 * 60;     // Token 유효 시간 = 60분
+
+        return JwtTokenUtil.createToken(user.getEmail(), secretKey, expireTimeMs);
+    }
+
+    @PostMapping("/register")
+    public String register(@RequestBody RegisterRequest joinRequest) {
+
+        // loginId 중복 체크
+        if(userService.checkEmailDuplicate(joinRequest.getEmail())) {
+            return "이메일이 중복됩니다.";
+        }
+        userService.registerUser(joinRequest);
+        return "회원가입 성공";
+    }
 
     @PutMapping("/update/{username}")
     @ApiOperation(value="유저 수정",notes="유저 정보를 수정합니다.")

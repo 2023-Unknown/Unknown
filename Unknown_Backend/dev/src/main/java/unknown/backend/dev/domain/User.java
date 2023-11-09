@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import unknown.backend.dev.common.domain.CoreEntity;
-import unknown.backend.dev.dto.RegisterDTO;
+import unknown.backend.dev.dto.RegisterRequest;
 
 @Entity
 @Getter
@@ -57,6 +57,7 @@ public class User extends CoreEntity {
         this.password = password;
         this.email = email;
         this.isActive = true;
+        this.role = UserRole.ROLE_USER;
         this.reportCount = 0;
     }
 
@@ -64,21 +65,21 @@ public class User extends CoreEntity {
         return this.isActive;
     }
 
-    public static RegisterDTO toDTO(User user) {
+    public static RegisterRequest toDTO(User user) {
 
-        return RegisterDTO.builder()
+        return RegisterRequest.builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
                 .email(user.getEmail())
                 .build();
     }
 
-    public static User toModel(RegisterDTO registerDTO) {
+    public static User toModel(RegisterRequest registerRequest) {
 
         return User.builder()
-                .username(registerDTO.getUsername())
-                .password(registerDTO.getPassword())
-                .email(registerDTO.getEmail())
+                .username(registerRequest.getUsername())
+                .password(registerRequest.getPassword())
+                .email(registerRequest.getEmail())
                 .build();
     }
 }
