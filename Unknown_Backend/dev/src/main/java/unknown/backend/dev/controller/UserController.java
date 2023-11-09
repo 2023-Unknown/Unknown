@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,10 +26,15 @@ import unknown.backend.dev.service.UserService;
 public class UserController {
 
     private UserService userService;
-
+    private final String secretKey;
+    private final Long expireTimeMs;
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService,
+                          @Value("${custom.jwt.secret}") String secretKey,
+                          @Value("${custom.jwt.expiration}") Long expireTimeMs) {
         this.userService = userService;
+        this.secretKey = secretKey;
+        this.expireTimeMs = expireTimeMs;
     }
 
     @GetMapping("/detail/{email}")
@@ -49,14 +55,11 @@ public class UserController {
 
         User user = userService.login(loginRequest);
 
-        // 로그인 아이디나 비밀번호가 틀린 경우 global error return
+
         if(user == null) {
             return"로그인 아이디 또는 비밀번호가 틀렸습니다.";
         }
 
-        // 로그인 성공 => Jwt Token 발급
-        String secretKey = "my-secret-key-123123";
-        long expireTimeMs = 1000 * 60 * 60;     // Token 유효 시간 = 60분
 
         return JwtTokenUtil.createToken(user.getEmail(), secretKey, expireTimeMs);
     }

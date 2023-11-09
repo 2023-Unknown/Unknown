@@ -71,7 +71,6 @@ public class UserService{
     }
 
     public User reportUser(String email){
-        log.info("신고자: " + email);
         User user = findByEmail(email);
         User reportedUser = em.find(User.class,user.getId());
         reportedUser.setReportCount(reportedUser.getReportCount() + 1);
@@ -103,7 +102,6 @@ public class UserService{
     }
     public User getLoginUserByEmail(String Email) {
         if(Email == null) return null;
-        System.out.println("Email = " + Email);
         return findByEmail(Email);
 
     }

@@ -14,7 +14,7 @@ import javax.mail.internet.MimeMessage;
 public class MailService {
 
     private final JavaMailSender javaMailSender;
-    private static final String senderEmail= "gohwangbong@gmail.com";
+    private static final String senderEmail= "tees3361@gmail.com";
     private static int number;
 
     public static void createNumber(){
