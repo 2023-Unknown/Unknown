@@ -1,20 +1,17 @@
 package unknown.backend.dev.service;
 
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import unknown.backend.dev.domain.Report;
 import unknown.backend.dev.domain.User;
-import unknown.backend.dev.dto.ReportDTO;
-import unknown.backend.dev.dto.UserDTO;
-import unknown.backend.dev.exception.UserNotFoundException;
+import unknown.backend.dev.dto.*;
+import unknown.backend.dev.exception.*;
 import unknown.backend.dev.repository.UserRepository;
 
+import javax.persistence.EntityManager;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -24,93 +21,76 @@ import java.util.stream.Collectors;
 public class UserService{
 
     private UserRepository userRepository;
+    private final EntityManager em;
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository,EntityManager em) {
         this.userRepository = userRepository;
+        this.em = em;
     }
 
     // 유저 전체 조회
     public List<User> findAll() {
         List<User> users = userRepository.findAll();
         return users.stream()
-                .filter(user -> user.isActive())
+                .filter(User::isActive)
                 .collect(Collectors.toList());
     }
 
-    public User findByMethodAndValue(String method, String value) {
-        switch (method) {
-            case "name":
-                return userRepository.findByUsername(value).orElseThrow(() ->
-                        new UserNotFoundException("해당 유저가 존재하지 않습니다."));
-            case "email":
-                return userRepository.findByEmail(value).orElseThrow(() ->
-                        new UserNotFoundException("해당 유저가 존재하지 않습니다."));
-            case "phoneNumber":
-                return userRepository.findByPhoneNumber(value).orElseThrow(() ->
-                        new UserNotFoundException("해당 유저가 존재하지 않습니다."));
-            default:
-                throw new UserNotFoundException("해당 유저가 존재하지 않습니다.");
-        }
 
-    }
-    public User saveUser(User user) {
+    public void saveUser(User user) {
         userRepository.save(user);
-        return user;
-    }
-    @Transactional
-    public User createUser(UserDTO userDTO) {
-
-        User createdUser = User.builder()
-                .username(userDTO.getUsername())
-                .password(userDTO.getPassword())
-                .email(userDTO.getEmail())
-                .phoneNumber(userDTO.getPhoneNumber())
-                .profileImage(userDTO.getProfileImage())
-                .interest(userDTO.getInterest())
-                .introduction(userDTO.getIntroduction())
-                .build();
-        userRepository.save(createdUser);
-        return createdUser;
     }
 
-    @Transactional
-    public User updateUser(String username, UserDTO userDTO){
-        // username 과 UserDTO username 일치하는지 확인
-        if(!username.equals(userDTO.getUsername())){
-            throw new UserNotFoundException("권한이 존재하지 않습니다.");
+    public User findByEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(UserNotFoundException::new);
+        if(!user.isActive()){
+            throw new NotAllowedAccessException();
         }
-        User user = findByMethodAndValue("name", username);
-
-        user.setUsername(userDTO.getUsername());
-
-        if (!Objects.equals(userDTO.getPassword(), user.getPassword())) {
-            user.setPassword(userDTO.getPassword());
-        }
-        if (!Objects.equals(userDTO.getEmail(), user.getEmail())) {
-            user.setEmail(userDTO.getEmail());
-        }
-        if (!Objects.equals(userDTO.getPhoneNumber(), user.getPhoneNumber())) {
-            user.setPhoneNumber(userDTO.getPhoneNumber());
-        }
-        if (!Objects.equals(userDTO.getProfileImage(), user.getProfileImage())) {
-            user.setProfileImage(userDTO.getProfileImage());
-        }
-        if (!Objects.equals(userDTO.getInterest(), user.getInterest())) {
-            user.setInterest(userDTO.getInterest());
-        }
-        if (!Objects.equals(userDTO.getIntroduction(), user.getIntroduction())) {
-            user.setIntroduction(userDTO.getIntroduction());
-        }
-        userRepository.save(user);
         return user;
     }
 
     @Transactional
-    public User deleteUser(String username){
-        User user = findByMethodAndValue("name", username);
+    public User createUser(UserCreateDTO userCreateDTO) {
+        // 이메일 중복 확인
+        try{
+            findByEmail(userCreateDTO.getEmail());
+        }catch (UserNotFoundException e) {
+            User newUser = User.builder()
+                    .username(userCreateDTO.getUsername())
+                    .password(userCreateDTO.getPassword())
+                    .email(userCreateDTO.getEmail())
+                    .build();
+            saveUser(newUser);
+            return newUser;
+        }
+        return null;
+    }
+
+    @Transactional
+    public User updateUser(String email, UserUpdateDTO userUpdateDTO){
+        User originalUser = findByEmail(email);
+        User updatedUser = em.find(User.class,originalUser.getId());
+        updatedUser.setUsername(userUpdateDTO.getName());
+        updatedUser.setPassword(userUpdateDTO.getPassword());
+        updatedUser.setEmail(userUpdateDTO.getEmail());
+        return updatedUser;
+    }
+
+    @Transactional
+    public User reportUser(String email){
+        log.info("신고자: " + email);
+        User user = findByEmail(email);
+        User reportedUser = em.find(User.class,user.getId());
+        reportedUser.setReportCount(reportedUser.getReportCount() + 1);
+        return reportedUser;
+    }
+
+    public User deleteUser(String email){
+        User user = findByEmail(email);
         user.setActive(false);
         user.preRemove();
-        userRepository.save(user);
+        saveUser(user);
         return user;
     }
 }
