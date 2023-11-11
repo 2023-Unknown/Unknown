@@ -13,11 +13,6 @@ export default function SignUp(props: any) {
 		username: '',
 		email: '',
 		password: '',
-		interest: '',
-		introduction: '',
-		phoneNumber: '',
-		profileImage: '',
-		reportCount: 0,
 	});
 	const [code, setCode] = useState('');
 	const [returnCode, setReturnCode] = useState('');
@@ -30,13 +25,9 @@ export default function SignUp(props: any) {
 	};
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		// phoneNumber는 서버에서 공백으로 받지 못해서 강제로 email 정보 그대로 입력
-		setFormData({ ...formData, phoneNumber: formData.email });
 		e.preventDefault();
 
 		try {
-			// const signUpUser = await createUser(formData);
-			// modalVisible();
 			const authenticateEmail = await certifyEmail(formData.email);
 			setReturnCode(authenticateEmail);
 		} catch (error) {
@@ -50,8 +41,6 @@ export default function SignUp(props: any) {
 	};
 
 	const checkCodeAndCreateUser = async () => {
-		console.log(returnCode);
-		console.log(code);
 		if (returnCode == code) {
 			const signUpUser = await createUser(formData);
 			modalVisible();
