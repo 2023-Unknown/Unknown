@@ -1,6 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
-// `app/member/page.tsx` is the UI for the `/member` URL
+import { useState } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { userState } from '../states/user';
 import { signup } from '../apis/user';
@@ -38,24 +37,21 @@ export default function Page() {
 					placeholder='userName'
 					value={formData.username}
 					name='username'
-					onChange={handleChange}
-				></input>
+					onChange={handleChange}></input>
 				<br />
 				<input
 					type='email'
 					placeholder='userEmail'
 					value={formData.useremail}
 					name='useremail'
-					onChange={handleChange}
-				></input>
+					onChange={handleChange}></input>
 				<br />
 				<input
 					type='password'
 					placeholder='userPassword'
 					value={formData.userpassword}
 					name='userpassword'
-					onChange={handleChange}
-				></input>
+					onChange={handleChange}></input>
 				<br />
 				<button type='submit'>회원가입</button>
 			</form>

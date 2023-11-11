@@ -1,38 +1,38 @@
 # Backend Docker Compose
-version: "3"	
-services: 
+version: "3"
+services:
 
-  mysql: 	
-    image: mysql:latest	
+  mysql:
+    image: mysql:latest
     container_name: DB
     environment:
       - MYSQL_DATABASE=unknownDB
       - MYSQL_ROOT_HOST=%
       - MYSQL_ROOT_PASSWORD=1234
-    ports:		
-      - "3306:3306"
-    volumes:	
+    ports:
+      - 3306:3306
+    volumes:
       - ./data/mysql:/var/lib/mysql
-    networks:		
+    networks:
       - unknown_network
   
-  # springboot:
-  #   build:
-  #     context: dev
-  #     dockerfile: Dockerfile
-  #   restart: always
-  #   depends_on:
-  #     - mysql
-  #   ports:
-  #     - 8080:8080
-  #   container_name: apiServer
-  #   environment:
-  #     SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/unknownDB?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
-  #     SPRING_DATASOURCE_USERNAME: root
-  #     SPRING_DATASOURCE_PASSWORD: 1234
-  #     SPRING_PROFILES_ACTIVE: dev
-  #   networks:
-  #     - unknown_network
+  springboot:
+    build:
+      context: dev
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - mysql
+    ports:
+      - 8080:8080
+    container_name: apiServer
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/unknownDB?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 1234
+      SPRING_PROFILES_ACTIVE: dev
+    networks:
+      - unknown_network
 
 
   redis:
