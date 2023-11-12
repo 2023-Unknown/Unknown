@@ -24,8 +24,8 @@ public class RedisController {
     @PostMapping("/redis/save")
     @ApiOperation(value = "Redis 저장 API", notes = "Redis에 데이터를 저장합니다.")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "key", value = "저장할 데이터의 키"),
-            @ApiImplicitParam(name = "value", value = "저장할 데이터의 값")
+            @ApiImplicitParam(name = "key", value = "저장할 데이터의 키", paramType = "query"),
+            @ApiImplicitParam(name = "value", value = "저장할 데이터의 값", paramType = "query")
     })
     public String saveData(@RequestParam String key, @RequestParam String value){
         redisService.saveData(key, value);
@@ -34,7 +34,7 @@ public class RedisController {
 
     @GetMapping("/redis/show")
     @ApiOperation(value = "Redis 조회 API", notes = "Redis에 저장된 데이터를 조회합니다.")
-    @ApiImplicitParam(name = "key", value = "조회할 데이터의 키")
+    @ApiImplicitParam(name = "key", value = "조회할 데이터의 키", paramType = "query")
     public String showData(@RequestParam String key){
         return redisService.showData(key);
     }

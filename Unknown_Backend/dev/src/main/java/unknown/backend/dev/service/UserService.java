@@ -3,6 +3,7 @@ package unknown.backend.dev.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import unknown.backend.dev.domain.User;
@@ -12,20 +13,24 @@ import unknown.backend.dev.repository.UserRepository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
 @Service
+@Transactional
 @Slf4j
 @RequiredArgsConstructor
 public class UserService{
 
-    private UserRepository userRepository;
+    private static UserRepository userRepository;
+    private final BCryptPasswordEncoder encoder;
     private final EntityManager em;
     @Autowired
-    public UserService(UserRepository userRepository,EntityManager em) {
+    public UserService(UserRepository userRepository,EntityManager em, BCryptPasswordEncoder encoder) {
         this.userRepository = userRepository;
         this.em = em;
+        this.encoder = encoder;
     }
 
     // 유저 전체 조회
@@ -41,7 +46,7 @@ public class UserService{
         userRepository.save(user);
     }
 
-    public User findByEmail(String email) {
+    public static User findByEmail(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(UserNotFoundException::new);
         if(!user.isActive()){
@@ -50,24 +55,12 @@ public class UserService{
         return user;
     }
 
-    @Transactional
-    public User createUser(UserCreateDTO userCreateDTO) {
+
+    public void registerUser(RegisterRequest registerRequest) {
         // 이메일 중복 확인
-        try{
-            findByEmail(userCreateDTO.getEmail());
-        }catch (UserNotFoundException e) {
-            User newUser = User.builder()
-                    .username(userCreateDTO.getUsername())
-                    .password(userCreateDTO.getPassword())
-                    .email(userCreateDTO.getEmail())
-                    .build();
-            saveUser(newUser);
-            return newUser;
-        }
-        return null;
+        userRepository.save(registerRequest.toEntity(encoder.encode(registerRequest.getPassword())));
     }
 
-    @Transactional
     public User updateUser(String email, UserUpdateDTO userUpdateDTO){
         User originalUser = findByEmail(email);
         User updatedUser = em.find(User.class,originalUser.getId());
@@ -77,9 +70,7 @@ public class UserService{
         return updatedUser;
     }
 
-    @Transactional
     public User reportUser(String email){
-        log.info("신고자: " + email);
         User user = findByEmail(email);
         User reportedUser = em.find(User.class,user.getId());
         reportedUser.setReportCount(reportedUser.getReportCount() + 1);
@@ -92,5 +83,26 @@ public class UserService{
         user.preRemove();
         saveUser(user);
         return user;
+    }
+
+    public boolean checkEmailDuplicate(String email) {
+        return userRepository.existsUserByEmail(email);
+    }
+
+    public User login(LoginRequest loginRequest) {
+        Optional<User> optionalUser = userRepository.findByEmail(loginRequest.getLoginEmail());
+        if (optionalUser.isEmpty()) {
+            return null;
+        }
+        User user = optionalUser.get();
+        if (!encoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            return null;
+        }
+        return user;
+    }
+    public User getLoginUserByEmail(String Email) {
+        if(Email == null) return null;
+        return findByEmail(Email);
+
     }
 }

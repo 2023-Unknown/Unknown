@@ -7,11 +7,14 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import unknown.backend.dev.Util.JwtTokenUtil;
 import unknown.backend.dev.domain.User;
-import unknown.backend.dev.dto.UserCreateDTO;
+import unknown.backend.dev.dto.LoginRequest;
+import unknown.backend.dev.dto.RegisterRequest;
 import unknown.backend.dev.dto.UserUpdateDTO;
 import unknown.backend.dev.service.UserService;
 
@@ -23,15 +26,20 @@ import unknown.backend.dev.service.UserService;
 public class UserController {
 
     private UserService userService;
-
+    private final String secretKey;
+    private final Long expireTimeMs;
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService,
+                          @Value("${custom.jwt.secret}") String secretKey,
+                          @Value("${custom.jwt.expiration}") Long expireTimeMs) {
         this.userService = userService;
+        this.secretKey = secretKey;
+        this.expireTimeMs = expireTimeMs;
     }
 
     @GetMapping("/detail/{email}")
     @ApiOperation(value="특정 유저 조회",notes="유저 정보를 조회합니다.")
-    @ApiImplicitParam(name = "email", value = "이메일")
+    @ApiImplicitParam(name = "email", value = "이메일",paramType = "path")
     public ResponseEntity<User> getUserDetail(@PathVariable String email) {
         User user = userService.findByEmail(email);
         return ResponseEntity.ok(user);
@@ -42,14 +50,29 @@ public class UserController {
         return userService.findAll().toString();
     }
 
-    @PostMapping("/create")
-    @ApiOperation(value="유저 생성",notes="유저를 생성합니다.")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "userCreateDTO", value = "생성할 유저의 정보")
-    })
-    public ResponseEntity<User> createUser(@RequestBody UserCreateDTO userCreateDTO) {
-        User user = userService.createUser(userCreateDTO);
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+    @PostMapping("/login")
+    public String login(@RequestBody LoginRequest loginRequest) {
+
+        User user = userService.login(loginRequest);
+
+
+        if(user == null) {
+            return"로그인 아이디 또는 비밀번호가 틀렸습니다.";
+        }
+
+
+        return JwtTokenUtil.createToken(user.getEmail(), secretKey, expireTimeMs);
+    }
+
+    @PostMapping("/register")
+    public String register(@RequestBody RegisterRequest joinRequest) {
+
+        // loginId 중복 체크
+        if(userService.checkEmailDuplicate(joinRequest.getEmail())) {
+            return "이메일이 중복됩니다.";
+        }
+        userService.registerUser(joinRequest);
+        return "회원가입 성공";
     }
 
     @PutMapping("/update/{username}")
@@ -65,7 +88,7 @@ public class UserController {
 
     @DeleteMapping("/delete/{username}")
     @ApiOperation(value="유저 삭제",notes="유저를 삭제합니다.")
-    @ApiImplicitParam(name = "username", value = "삭제할 유저의 이름",paramType = "query")
+    @ApiImplicitParam(name = "username", value = "삭제할 유저의 이름",paramType = "path")
     public ResponseEntity<User> deleteUser(@PathVariable String username) {
         User user = userService.deleteUser(username);
         return new ResponseEntity<>(user, HttpStatus.OK);
