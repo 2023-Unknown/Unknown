@@ -1,14 +1,11 @@
 package unknown.backend.dev.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class TranslationRequest {
     private String[] text;
     private String target_lang;
-
-    public TranslationRequest(String[] text, String target_lang) {
-        this.text = text;
-        this.target_lang = target_lang;
-    }
 }

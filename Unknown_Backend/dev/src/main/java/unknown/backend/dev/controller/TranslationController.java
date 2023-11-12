@@ -4,33 +4,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import unknown.backend.dev.dto.TranslationRequest;
 import unknown.backend.dev.service.TranslationService;
 
 @RestController
+@RequestMapping("/api/v1")
 public class TranslationController {
 
+    private final TranslationService translationService;
     @Autowired
-    private TranslationService translationService;
-
-    @PostMapping("/toKoreantranslate")
+    public TranslationController(TranslationService translationService){
+        this.translationService = translationService;
+    }
+    @PostMapping("/toKorean")
     public String translateToKorean(@RequestBody TranslationRequest request) {
         String[] inputTextArray = request.getText();
         String target_Lang = request.getTarget_lang();
         String inputText = String.join(" ", inputTextArray);
-        String translatedText = translationService.translateToKorean(inputText);
 
-        return translatedText;
+        return translationService.translateToKorean(inputText);
     }
 
-    @PostMapping("/toEnglishtranslate")
+    @PostMapping("/toEnglish")
     public String translateToEnglish(@RequestBody TranslationRequest request) {
         String[] inputTextArray = request.getText();
         String target_Lang = request.getTarget_lang();
         String inputText = String.join(" ", inputTextArray);
-        String translatedText = translationService.translateToEnglish(inputText);
 
-        return translatedText;
+        return translationService.translateToEnglish(inputText);
     }
 }
