@@ -4,11 +4,11 @@ import lombok.Data;
 
 @Data
 public class TranslationRequest {
-    private String text;
-    private String targetLang;
+    private String[] text;
+    private String target_lang;
 
-    public TranslationRequest(String text, String targetLang) {
+    public TranslationRequest(String[] text, String target_lang) {
         this.text = text;
-        this.targetLang = targetLang;
+        this.target_lang = target_lang;
     }
 }
