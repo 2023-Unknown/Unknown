@@ -42,7 +42,6 @@ public class TranslationService {
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
             TranslationResponse translationResponse = responseEntity.getBody();
             if (translationResponse != null && translationResponse.getTranslations() != null && !translationResponse.getTranslations().isEmpty()) {
-                System.out.println(translationResponse.getTranslations().get(0).getText());
                 return translationResponse.getTranslations().get(0).getText();
             }
         }
@@ -67,7 +66,6 @@ public class TranslationService {
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
             TranslationResponse translationResponse = responseEntity.getBody();
             if (translationResponse != null && translationResponse.getTranslations() != null && !translationResponse.getTranslations().isEmpty()) {
-                System.out.println(translationResponse.getTranslations().get(0).getText());
                 return translationResponse.getTranslations().get(0).getText();
             }
         }
