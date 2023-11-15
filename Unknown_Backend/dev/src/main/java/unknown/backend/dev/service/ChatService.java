@@ -4,6 +4,8 @@ import unknown.backend.dev.domain.ChatRoom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import unknown.backend.dev.domain.User;
+import unknown.backend.dev.repository.UserRepository;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
@@ -107,5 +109,9 @@ public class ChatService {
             log.info("방 번호 : " + roomResult);
             return findRoomById(roomResult);
         }
+    }
+
+    public User getLoginUserByEmail(String email) {
+        return UserService.findByEmail(email);
     }
 }
