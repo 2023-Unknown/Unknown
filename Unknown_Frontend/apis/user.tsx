@@ -17,6 +17,12 @@ export const certifyEmail = async (email: string) => {
 };
 
 /* 로그인 */
+export const loginUser = async (formData: {
+	email: string;
+	password: string;
+}) => {
+	const response = await axios.post('/users/login', formData);
+};
 
 /* 로그아웃 */
 //  export const logout
