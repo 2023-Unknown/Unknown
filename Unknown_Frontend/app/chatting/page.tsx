@@ -1,12 +1,16 @@
-import React from 'react'
-import Logo from "../../components/Logo"
+'use client';
 
+import React from 'react';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
+import Logo from '../../components/Logo';
+import { userToken } from '../../states/user';
 
 export default function Main() {
-  return (
-    <div>
-        <Logo/>
-    </div>
-    
-  )
+	const token = useRecoilValue(userToken);
+
+	return (
+		<div>
+			<Logo />
+		</div>
+	);
 }

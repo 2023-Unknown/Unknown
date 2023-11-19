@@ -31,6 +31,7 @@ export default function Input() {
 			const getToken = await loginUser(loginData).then((res) => {
 				setToken(res);
 				console.log(token);
+				window.location.href = '/chatting';
 			});
 		} catch (error) {
 			console.error(error); // 이 부분은 에러처리를 원하는 방식으로 변경하실 수 있습니다.
