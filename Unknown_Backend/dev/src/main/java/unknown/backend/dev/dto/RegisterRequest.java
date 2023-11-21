@@ -1,5 +1,6 @@
 package unknown.backend.dev.dto;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,12 +20,15 @@ public class RegisterRequest {
     private final String passwordConfirm;
     @ApiModelProperty(example = "유저 이메일")
     private final String email;
+    @ApiModelProperty(example = "주로 사용하는 언어")
+    private final String language;
 
     public User toEntity(String encodedPassword) {
         return User.builder()
                 .username(username)
                 .password(encodedPassword)
                 .email(email)
+                .language(language)
                 .build();
     }
 }
