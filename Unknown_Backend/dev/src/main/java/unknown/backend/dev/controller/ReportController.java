@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import unknown.backend.dev.domain.User;
-import unknown.backend.dev.dto.ReportDTO;
+import unknown.backend.dev.dto.ReportRequest;
 import unknown.backend.dev.exception.NotAllowedAccessException;
 import unknown.backend.dev.exception.UserNotFoundException;
 import unknown.backend.dev.service.ReportService;
@@ -31,17 +31,14 @@ public class ReportController {
     @PostMapping("/")
     @ApiOperation(value="유저 신고",notes="유저를 신고합니다.")
     @ApiImplicitParam(name = "reportDTO", value = "신고 정보")
-    public boolean reportUser(@RequestBody ReportDTO reportDTO) {
+    public boolean reportUser(@RequestBody ReportRequest reportRequest) {
         try{
-            User user = userService.findByEmail(reportDTO.getReporterEmail());
-            log.info("신고자: " + user.getUsername());
+            User user = userService.findByEmail(reportRequest.getReporterEmail());
             if(user.isActive()){
-                log.info("[DEBUG] RestController: 40Line");
-                return reportService.reportUser(reportDTO);
+                return reportService.reportUser(reportRequest);
             }
             return false;
         }catch(UserNotFoundException | NotAllowedAccessException e){
-            log.info(e.getMessage());
             return false;
         }
     }
