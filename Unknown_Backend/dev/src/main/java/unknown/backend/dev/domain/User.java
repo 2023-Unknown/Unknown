@@ -38,13 +38,17 @@ public class User extends CoreEntity {
     @ApiModelProperty(example = "유저 이메일")
     private String email;
 
-    @Column(name = "is_active", nullable = true, columnDefinition = "boolean DEFAULT true")
+    @Column(name = "is_active", columnDefinition = "boolean DEFAULT true")
     @ApiModelProperty(example = "유저 신고 횟수")
     private boolean isActive;
-    // 신고 당한 횟수
-    @Column(name = "report_count", nullable = true, columnDefinition = "int DEFAULT 0")
+
+    @Column(name = "report_count",columnDefinition = "int DEFAULT 0")
     @ApiModelProperty(example = "유저 신고 횟수")
     private int reportCount;
+
+    @Column(name = "language", nullable = false, columnDefinition = "varchar(255)")
+    @ApiModelProperty(example = "주로 사용하는 언어")
+    private String language;
 
     @Column(name = "role", nullable = true, columnDefinition = "varchar(255) DEFAULT 'ROLE_USER'")
     @Enumerated(value = EnumType.STRING)
@@ -52,34 +56,17 @@ public class User extends CoreEntity {
     private UserRole role;
 
     @Builder
-    public User(String username, String password, String email) {
+    public User(String username, String password, String email, String language) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.isActive = true;
         this.role = UserRole.ROLE_USER;
         this.reportCount = 0;
+        this.language = language;
     }
 
     public boolean isActive() {
         return this.isActive;
-    }
-
-    public static RegisterRequest toDTO(User user) {
-
-        return RegisterRequest.builder()
-                .username(user.getUsername())
-                .password(user.getPassword())
-                .email(user.getEmail())
-                .build();
-    }
-
-    public static User toModel(RegisterRequest registerRequest) {
-
-        return User.builder()
-                .username(registerRequest.getUsername())
-                .password(registerRequest.getPassword())
-                .email(registerRequest.getEmail())
-                .build();
     }
 }
