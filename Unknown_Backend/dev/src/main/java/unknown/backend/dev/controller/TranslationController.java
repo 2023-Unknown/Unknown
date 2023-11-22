@@ -18,21 +18,10 @@ public class TranslationController {
     public TranslationController(TranslationService translationService){
         this.translationService = translationService;
     }
-    @PostMapping("/toKorean")
-    public String translateToKorean(@RequestBody TranslationRequest request) {
+    @PostMapping("/translate")
+    public String translate(@RequestBody TranslationRequest request) {
         String[] inputTextArray = request.getText();
-        String target_Lang = request.getTarget_lang();
-        String inputText = String.join(" ", inputTextArray);
-
-        return translationService.translateToKorean(inputText);
-    }
-
-    @PostMapping("/toEnglish")
-    public String translateToEnglish(@RequestBody TranslationRequest request) {
-        String[] inputTextArray = request.getText();
-        String target_Lang = request.getTarget_lang();
-        String inputText = String.join(" ", inputTextArray);
-
-        return translationService.translateToEnglish(inputText);
+        String targetLang = request.getTarget_lang();
+        return translationService.translate(inputTextArray,targetLang);
     }
 }

@@ -30,16 +30,16 @@ public class ReportController {
     }
     @PostMapping("/")
     @ApiOperation(value="유저 신고",notes="유저를 신고합니다.")
-    @ApiImplicitParam(name = "reportDTO", value = "신고 정보")
+    @ApiImplicitParam(name = "reportRequest", value = "신고 정보")
     public boolean reportUser(@RequestBody ReportRequest reportRequest) {
         try{
             User user = userService.findByEmail(reportRequest.getReporterEmail());
-            if(user.isActive()){
+            if(user.isActive()) {
                 return reportService.reportUser(reportRequest);
             }
-            return false;
         }catch(UserNotFoundException | NotAllowedAccessException e){
             return false;
         }
+        return false;
     }
 }
