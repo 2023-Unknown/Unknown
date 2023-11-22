@@ -4,143 +4,234 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Kanit';
-  src: url('../font/Kanit/Kanit-Light.ttf') format('truetype');
+	font-family: 'Kanit';
+	src: url('../font/Kanit/Kanit-Light.ttf') format('truetype');
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }
 
 body {
-  background-color: rgb(29, 39, 66); 
-  font-family: 'Kanit';
+	background-color: rgb(29, 39, 66);
+	font-family: 'Kanit';
 }
 
 .StartTitle {
-  font-weight: 600;
-  font-size: 2.5rem;
-  margin-left: 3rem;
-  width:50rem;
-  color:white;
-  align-items: center; 
+	font-weight: 600;
+	font-size: 2.5rem;
+	margin-left: 3rem;
+	width: 50rem;
+	color: white;
+	align-items: center;
 }
 
 .StartInfo {
-  margin-top: 5rem;
-  margin-left: 19rem;
-  width:50rem;
-  font-size: 1.1rem;
-  font-weight: 200;
-  color:white;
-  animation: fadeIn 3s;
-  align-items: center; 
+	margin-top: 5rem;
+	margin-left: 19rem;
+	width: 50rem;
+	font-size: 1.1rem;
+	font-weight: 200;
+	color: white;
+	animation: fadeIn 3s;
+	align-items: center;
 }
 
-.ButtonBox{
-  margin-left: 40rem;
-  margin-top: 5rem;
+.ButtonBox {
+	margin-left: 40rem;
+	margin-top: 5rem;
 }
 
-.StartButton{
-  font-weight:600;
-  color: white;
-  animation: fadeIn 3s;
-  padding: 1rem;
-  border-radius: 1rem;
-  border: 1.3px solid;
-  align-items: center;
-  transition: transform 0.3s ease;
+.StartButton {
+	font-weight: 600;
+	color: white;
+	animation: fadeIn 3s;
+	padding: 1rem;
+	border-radius: 1rem;
+	border: 1.3px solid;
+	align-items: center;
+	transition: transform 0.3s ease;
 }
 
 .StartButton:hover {
-  transform: scale(1.1); 
+	transform: scale(1.1);
 }
 
-.LoadingPage{
-  margin-top: -45rem;
+.LoadingPage {
+	margin-top: -45rem;
 }
 
 .MainTitle {
-  font-family: 'Kanit';
-  display: flex;
-  align-items: center; 
-  margin-top: 1rem;
-  margin-left: 2.5rem;
-  margin-bottom: 11rem;
-  font-size: 5rem;
-  color: white;
+	font-family: 'Kanit';
+	display: flex;
+	align-items: center;
+	margin-top: 0rem;
+	margin-left: 2.5rem;
+	margin-bottom: 11rem;
+	font-size: 5rem;
+	color: white;
 }
 
 .MainInfo {
-  font-family: 'Kanit';
-  margin-top: 0rem;
-  margin-left: 8rem;
-  font-size: 3rem;
-  font-weight: 300;
-  color: white;
+	font-family: 'Kanit';
+	margin-top: 0rem;
+	margin-left: 8rem;
+	font-size: 3rem;
+	font-weight: 300;
+	color: white;
 }
 
 .MainBox {
-  margin-left: 12rem;
-  width: 30rem;
-  align-items: center;
+	margin-left: 12rem;
+	width: 30rem;
+	align-items: center;
 }
 
 .SubInfo {
-  font-family: 'Kanit';
-  margin-top: 5rem;
-  font-size: 1rem;
-  color: white;
-  font-weight: 50;
+	font-family: 'Kanit';
+	margin-top: 5rem;
+	font-size: 1rem;
+	color: white;
+	font-weight: 50;
 }
 
 .InputBox {
-  width: 50rem;
-  margin-left: 45rem;
-  margin-top: -35rem;
+	width: 50rem;
+	margin-left: 45rem;
+	margin-top: -35rem;
 }
 
 .Dice {
-  margin-top: 0.2rem;
-  margin-right: 1rem; 
-  width: 5rem;
+	margin-top: 0.2rem;
+	margin-right: 1rem;
+	width: 5rem;
 }
 
 .LogoTitle {
-  display: flex;
-  align-items: center; 
-  margin-top: 1rem;
-  margin-left: 2.5rem;
-  margin-bottom: 15rem;
-  font-size: 2rem;
-  color: white;
+	display: flex;
+	align-items: center;
+	margin-top: 1rem;
+	margin-left: 2.5rem;
+	margin-bottom: 15rem;
+	font-size: 2rem;
+	color: white;
 }
 
 .LogoSignup {
-  display: flex;
-  align-items: center; 
-  margin-bottom: 3rem;
-  font-size: 1.5rem;
-  font-weight: 500;
-  color: black;
+	display: flex;
+	align-items: center;
+	margin-bottom: 3rem;
+	font-size: 1.5rem;
+	font-weight: 500;
+	color: black;
 }
-
 
 .LogoSignupPic {
-  width: 2rem;
+	width: 2rem;
 }
-
 
 .LogoPic {
-  margin-top: 0.2rem;
-  margin-right: 1rem; 
-  width: 3rem;
+	margin-top: 0.2rem;
+	margin-right: 1rem;
+	width: 3rem;
 }
 
+.ChatBox {
+	position: fixed;
+	width: 60%;
+	max-height: 35rem;
+	height: 44rem;
+	background-color: rgb(228, 232, 234);
+	margin-top: -12rem;
+	margin-left: 18rem;
+	margin-right: 15rem;
+	margin-bottom: 10rem;
+	padding-left: 15%;
+	padding-right: 5%;
+	padding-bottom: 15%;
+	border-radius: 2rem;
+	border: 2.5px solid #258cc7;
+	overflow-y: auto;
+	scroll-behavior: smooth;
+}
 
+.ChatBox::-webkit-scrollbar {
+	width: 0px;
+}
+
+.ChatInput {
+	position: fixed; /* 절대적인 위치 설정 */
+	bottom: 2.5rem;
+	display: inline;
+	margin-top: 17rem;
+	margin-left: -13.6rem;
+	background-color: white;
+	width: 60%;
+	height: 4rem;
+	border-radius: 1.5rem;
+	border: 2.5px solid #258cc7;
+}
+
+.ChatButton {
+	position: fixed;
+	bottom: 2.65rem;
+	background-color: #1b78ae;
+	border-radius: 1.5rem;
+	margin-top: 15.7em;
+	margin-left: 32.32rem;
+	padding: 0.5rem;
+	width: 8rem;
+	height: 3.7rem;
+	color: white;
+}
+
+.ChatMessages {
+	display: flex;
+	flex-direction: column; /* 역방향으로 메시지 표시 */
+	justify-content: flex-end; /* 최신 메시지가 아래로 정렬 */
+	min-height: auto; /* 최소 높이 설정 */
+}
+
+.Message {
+	color: white;
+	background-color: #1b78ae;
+	padding: 0.5rem;
+	padding-left: 1rem;
+	font-family: 'Kanit';
+	font-size: x-large;
+	text-align: right;
+	margin-top: 1rem;
+	margin-left: auto;
+	padding: 0.5rem;
+	border-radius: 0.5rem;
+	display: flex;
+	clear: both;
+	width: fit-content;
+	flex-direction: column; /* 역방향으로 메시지 표시 */
+	justify-content: flex-end; /* 최신 메시지가 아래로 정렬 */
+	min-height: auto; /* 최소 높이 설정 */
+}
+
+.Message:hover {
+	background-color: rgb(164, 178, 199);
+}
+
+.Translate {
+	color: black;
+	margin-left: 1rem;
+	font-weight: 800;
+	font-size: 0.8rem;
+	width: 3rem;
+	white-space: pre-line;
+}
+
+.Loading {
+	margin-left: 41rem;
+	margin-top: 20rem;
+	position: fixed;
+}
