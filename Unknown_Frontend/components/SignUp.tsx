@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import Logo from './SignupLogo';
 import { userState } from '../states/user';
 import { createUser, certifyEmail } from '../apis/user';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 export default function SignUp(props: any) {
 	const { modalVisible } = props;

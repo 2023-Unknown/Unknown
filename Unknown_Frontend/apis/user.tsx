@@ -6,7 +6,7 @@ export const createUser = async (formData: {
 	password: string;
 	username: string;
 }) => {
-	const response = await axios.post('/users/create', formData);
+	const response = await axios.post('/users/register', formData);
 };
 
 /* 이메일 인증 */
@@ -18,11 +18,11 @@ export const certifyEmail = async (email: string) => {
 
 /* 로그인 */
 export const loginUser = async (formData: {
-	email: string;
+	loginEmail: string;
 	password: string;
 }) => {
 	const response = await axios.post('/users/login', formData);
+	return response.data;
 };
 
 /* 로그아웃 */
-//  export const logout

@@ -9,7 +9,7 @@ interface CreateUser {
 }
 
 interface LoginUser {
-	email: string;
+	loginEmail: string;
 	password?: string;
 }
 
@@ -25,7 +25,14 @@ export const userState = atom<CreateUser>({
 export const loginUserState = atom<LoginUser>({
 	key: 'Loginuser',
 	default: {
-		email: '',
+		loginEmail: '',
 		password: '',
+	},
+});
+
+export const userToken = atom({
+	key: 'token',
+	default: {
+		token: 'Bearer',
 	},
 });
