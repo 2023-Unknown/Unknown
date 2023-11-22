@@ -26,4 +26,3 @@ export const loginUser = async (formData: {
 };
 
 /* 로그아웃 */
-//  export const logout
