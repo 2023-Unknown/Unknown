@@ -1,12 +1,14 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useSetRecoilState, useRecoilValue } from 'recoil';
 import SignUpModal from './SignUp';
 import { userToken } from '../states/user';
 import { loginUser } from '../apis/user';
 
 export default function Input() {
+	const router = useRouter();
 	const token = useRecoilValue(userToken);
 	const setToken = useSetRecoilState(userToken);
 	const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
@@ -26,12 +28,11 @@ export default function Input() {
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-
 		try {
 			const getToken = await loginUser(loginData).then((res) => {
 				setToken(res);
 				console.log(token);
-				window.location.href = '/chatting';
+				router.push('/chatting');
 			});
 		} catch (error) {
 			console.error(error); // 이 부분은 에러처리를 원하는 방식으로 변경하실 수 있습니다.
