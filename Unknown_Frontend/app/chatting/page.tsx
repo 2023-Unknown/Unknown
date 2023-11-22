@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSetRecoilState, useRecoilValue } from 'recoil';
 import Logo from '../../components/Logo';
+import ChatPrompt from '@/components/ChatPrompt';
 import { Spinner } from '../../components/Spinner';
 import { userToken } from '../../states/user';
 import { getChatroom } from '@/apis/chat';
@@ -31,7 +32,7 @@ export default function Main() {
 	return (
 		<div>
 			<Logo />
-			{roomId === 0 ? <Spinner /> : <p>채팅방 위치</p>}
+			{roomId === 0 ? <Spinner /> : <ChatPrompt />}
 		</div>
 	);
 }
