@@ -31,7 +31,6 @@ export default function Input() {
 		try {
 			const getToken = await loginUser(loginData).then((res) => {
 				setToken(res);
-				console.log(token);
 				router.push('/chatting');
 			});
 		} catch (error) {
