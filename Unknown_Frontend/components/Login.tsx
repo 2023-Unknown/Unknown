@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { setCookie } from '@/config/cookie';
 import { useSetRecoilState, useRecoilValue } from 'recoil';
 import SignUpModal from './SignUp';
 import { userToken } from '../states/user';
@@ -31,6 +32,7 @@ export default function Input() {
 		try {
 			const getToken = await loginUser(loginData).then((res) => {
 				setToken(res);
+				setCookie('userToken', res, []);
 				router.push('/chatting');
 			});
 		} catch (error) {
