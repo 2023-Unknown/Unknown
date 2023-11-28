@@ -38,15 +38,6 @@ export default function Main() {
 						WebSocketClient.subscribe('/topic/chat/room/123', (message) => {
 							console.log(`Received Message : ${message.body}`);
 						});
-						WebSocketClient.publish({
-							destination: '/app/chat/message',
-							body: JSON.stringify({
-								"type": "TALK",
-								"sender": "unknown",
-								"message": "qerweqer",
-								"roomId": "123"
-							})
-						});
 					}
 
 				});
