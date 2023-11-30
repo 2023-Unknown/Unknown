@@ -2,7 +2,7 @@
 // const nextConfig = {};
 
 const nextConfig = {
-	reactStrictMode: true,
+	reactStrictMode: false,
 	swcMinify: true,
 	async rewrites() {
 		return [

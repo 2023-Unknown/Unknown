@@ -52,7 +52,9 @@ export default function SignUp(props: any) {
 			<div className='fixed inset-0 flex items-center justify-center z-10 bg-black bg-opacity-50'>
 				<div className='bg-white rounded-lg p-8 max-w-md'>
 					<div>
-						<Logo />
+						<img
+							className='LogoSignup'
+							src='https://images-eds-ssl.xboxlive.com/image?url=Q_rwcVSTCIytJ0KOzcjWTYl.n38D8jlKWXJx7NRJmQKBAEDCgtTAQ0JS02UoaiwRKJu7IXE5p0ljF.XZq88_C_s3UL1VlzvBplYDodmaXiLfR9P2ktgJS5uJp1QqKV40EEsW4QyOSkEeeG7FBMxo8A--&format=source'></img>
 					</div>
 					<form onSubmit={handleSubmit}>
 						<input
@@ -89,20 +91,24 @@ export default function SignUp(props: any) {
 						</button>
 					</form>
 
-					<input
-						type='text'
-						placeholder='Authentication Code'
-						value={code}
-						name='code'
-						onChange={handleCodeChange}
-						className='border w-full h-12 px-3 py-4 mt-2 hover:outline-none focus:outline-none focus:ring-indigo-600 focus:ring-2 rounded-md'
-					/>
+					{returnCode !== '' && (
+						<>
+							<input
+								type='text'
+								placeholder='Authentication Code'
+								value={code}
+								name='code'
+								onChange={handleCodeChange}
+								className='border w-full h-12 px-3 py-4 mt-2 hover:outline-none focus:outline-none focus:ring-indigo-600 focus:ring-2 rounded-md'
+							/>
 
-					<button
-						onClick={checkCodeAndCreateUser} // 모달 닫기 버튼
-						className='bg-blue-800 font-semibold text-white py-2 px-40 rounded-md hover:bg-blue-600 ml-1 mt-6'>
-						Certify Email
-					</button>
+							<button
+								onClick={checkCodeAndCreateUser} // 모달 닫기 버튼
+								className='bg-blue-800 font-semibold text-white py-2 px-40 rounded-md hover:bg-blue-600 ml-1 mt-6'>
+								Certify Email
+							</button>
+						</>
+					)}
 				</div>
 			</div>
 		</div>

@@ -22,18 +22,30 @@ body {
 	font-family: 'Kanit';
 }
 
-.StartTitle {
-	font-weight: 600;
-	font-size: 2.5rem;
+.LogoDiv {
+	display: flex;
+	margin-top: 2.5rem;
 	margin-left: 3rem;
-	width: 50rem;
+	font-size: 2rem;
 	color: white;
+}
+
+.Logo {
+	margin-top: 0.2rem;
+	margin-right: 1rem;
+	width: 3rem;
+}
+
+.DefaultDiv {
+	/* 수평 중앙 정렬하기 */
+	margin: 0 auto;
 	align-items: center;
 }
 
-.StartInfo {
-	margin-top: 5rem;
-	margin-left: 19rem;
+.CenterDiv {
+	/* 수평 중앙 정렬하기 */
+	margin: 0 auto;
+	margin-top: 15rem;
 	width: 50rem;
 	font-size: 1.1rem;
 	font-weight: 200;
@@ -42,15 +54,49 @@ body {
 	align-items: center;
 }
 
+.BottomDiv {
+	width: 90%;
+	font-size: 0.8rem;
+	font-weight: 300;
+	color: white;
+	animation: fadeIn 3s;
+	margin: 0 auto;
+}
+
+.StartTitle {
+	font-weight: 600;
+	font-size: 2.5rem;
+	/* 수평 중앙 정렬하기 */
+	margin: 0 auto;
+	width: 50rem;
+	color: white;
+	align-items: center;
+	text-align: center;
+}
+
+.Warning {
+	font-weight: 200;
+	font-size: 1rem;
+	/* 수평 중앙 정렬하기 */
+	margin: 0 auto;
+	width: 40rem;
+	color: white;
+	align-items: center;
+	text-align: center;
+}
+
 .ButtonBox {
-	margin-left: 40rem;
-	margin-top: 5rem;
+	width: 50rem;
+	padding: 3rem;
+	display: flex;
+	justify-content: center;
 }
 
 .StartButton {
 	font-weight: 600;
 	color: white;
 	animation: fadeIn 3s;
+	margin: 0 auto;
 	padding: 1rem;
 	border-radius: 1rem;
 	border: 1.3px solid;
@@ -62,82 +108,54 @@ body {
 	transform: scale(1.1);
 }
 
+.LogoutButton {
+	display: flex;
+	float: right;
+	align-items: center;
+}
+
 .LoadingPage {
 	margin-top: -45rem;
 }
 
-.MainTitle {
-	font-family: 'Kanit';
+.Loading {
+	margin-left: 41rem;
+	margin-top: 20rem;
+	position: fixed;
+}
+
+.Main {
+	margin-top: 15rem;
 	display: flex;
-	align-items: center;
-	margin-top: 0rem;
-	margin-left: 2.5rem;
-	margin-bottom: 11rem;
-	font-size: 5rem;
+}
+
+.MainText {
+}
+
+.MainTitle {
+	font-weight: 500;
+	font-size: 2.5rem;
+	margin: 0 auto;
+	margin-left: 20rem;
 	color: white;
 }
 
-.MainInfo {
-	font-family: 'Kanit';
-	margin-top: 0rem;
-	margin-left: 8rem;
-	font-size: 3rem;
-	font-weight: 300;
-	color: white;
-}
-
-.MainBox {
-	margin-left: 12rem;
-	width: 30rem;
-	align-items: center;
-}
-
-.SubInfo {
-	font-family: 'Kanit';
-	margin-top: 5rem;
-	font-size: 1rem;
+.SubText {
+	width: 50rem;
+	margin-top: 4rem;
+	margin-left: 20rem;
+	font-size: 1.1rem;
 	color: white;
 	font-weight: 50;
 }
 
-.InputBox {
-	width: 50rem;
-	margin-left: 45rem;
-	margin-top: -35rem;
-}
-
-.Dice {
-	margin-top: 0.2rem;
-	margin-right: 1rem;
-	width: 5rem;
-}
-
-.LogoTitle {
-	display: flex;
-	align-items: center;
-	margin-top: 1rem;
-	margin-left: 2.5rem;
-	margin-bottom: 15rem;
-	font-size: 2rem;
-	color: white;
+.LoginInput {
+	width: 25rem;
+	margin-left: 3rem;
 }
 
 .LogoSignup {
-	display: flex;
-	align-items: center;
-	margin-bottom: 3rem;
-	font-size: 1.5rem;
-	font-weight: 500;
-	color: black;
-}
-
-.LogoSignupPic {
-	width: 2rem;
-}
-
-.LogoPic {
-	margin-top: 0.2rem;
-	margin-right: 1rem;
+	margin: 0 auto;
 	width: 3rem;
 }
 
@@ -228,10 +246,4 @@ body {
 	font-size: 0.8rem;
 	width: 3rem;
 	white-space: pre-line;
-}
-
-.Loading {
-	margin-left: 41rem;
-	margin-top: 20rem;
-	position: fixed;
 }

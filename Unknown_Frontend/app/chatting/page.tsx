@@ -1,20 +1,17 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useSetRecoilState, useRecoilValue } from 'recoil';
+import { getCookie } from '@/config/cookie';
 import Logo from '../../components/Logo';
 import ChatPrompt from '@/components/ChatPrompt';
 import { Spinner } from '../../components/Spinner';
-import { userToken } from '../../states/user';
 import { getChatroom } from '@/apis/chat';
 
 export default function Main() {
 	const [roomId, setRoomId] = useState(0);
-	const tokenState = useRecoilValue(userToken);
-
 	const enterChat = async () => {
 		try {
-			const enterChat = await getChatroom(tokenState).then((res) => {
+			const enterChat = await getChatroom(getCookie('userToken')).then((res) => {
 				setRoomId(res);
 			});
 		} catch (error) {

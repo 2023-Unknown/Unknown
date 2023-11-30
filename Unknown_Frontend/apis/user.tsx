@@ -24,5 +24,3 @@ export const loginUser = async (formData: {
 	const response = await axios.post('/users/login', formData);
 	return response.data;
 };
-
-/* 로그아웃 */
