@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 
-export default function ChatPrompt() {
+export default function ChatPrompt({ ws }: { ws: WebSocket | null }) {
 	const [message, setMessage] = useState<string>('');
 	const [messages, setMessages] = useState<string[]>([]);
 	const chatMessagesRef = useRef<HTMLDivElement | null>(null);
@@ -15,6 +15,17 @@ export default function ChatPrompt() {
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		if (message.trim() !== '') {
+			// 추가된 부분 11.29
+			ws?.publish({
+				destination: '/app/chat/message', body:
+					JSON.stringify({
+						"type": "TALK",
+						"sender": "heesane",
+						"message": message,
+						"roomId": "123"
+					})
+			})
+
 			setMessages([...messages, message]);
 			setMessage('');
 			// 스크롤을 항상 가장 아래로 이동
