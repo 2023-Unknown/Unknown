@@ -1,26 +1,25 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useSetRecoilState, useRecoilValue } from 'recoil';
+import { getCookie } from '@/config/cookie';
 import Logo from '../../components/Logo';
 import ChatPrompt from '@/components/ChatPrompt';
 import { Spinner } from '../../components/Spinner';
-import { userToken } from '../../states/user';
 import { getChatroom } from '@/apis/chat';
 import { Client } from '@stomp/stompjs';
 import { WebSocket } from 'ws';
 
 export default function Main() {
 	const [roomId, setRoomId] = useState(0);
+
 	const [ws, setWs] = useState<Client | null>(null);
 	const tokenState = useRecoilValue(userToken);
 	let promiseRoomId = "";
 
 	const enterChat = async () => {
 		try {
-			await getChatroom(tokenState).then((res) => {
-				console.log("res: " + res);
-				promiseRoomId = res;
+			const enterChat = await getChatroom(getCookie('userToken')).then((res) => {
+        promiseRoomId = res;
 				setRoomId(res);
 
 				const WebSocketClient = new Client({
