@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getCookie, removeCookie } from '@/config/cookie';
 import Logo from '../components/Logo';
+import Image from 'next/image';
 
 export default function page() {
 	const router = useRouter();
@@ -18,24 +19,30 @@ export default function page() {
 	};
 
 	return (
-		<div className='StartPage'>
+		<div className='DefaultDiv'>
 			<Logo />
-			<div className='StartInfo'>
+			<div className='CenterDiv'>
 				<p className='StartTitle'>Have a nice time with your new friend</p>
-				There may be restrictions on the use of abusive language. If you get a
-				warning of more than five days, you will be expelled permanently.
-			</div>
-			<div className='ButtonBox'>
-				<button
-					className='StartButton bg-blue-900  hover:bg-blue-500'
-					onClick={() => router.push(path)}>
-					Start the chat
-				</button>
-				{isLogined && (
+				<p className='Warning'>
+					There may be restrictions on the use of abusive language.
+				</p>
+				<p className='Warning'>
+					If you get a warning of more than five days, you will be expelled
+					permanently.
+				</p>
+				<div className='ButtonBox'>
 					<button
 						className='StartButton bg-blue-900  hover:bg-blue-500'
-						onClick={logout}>
-						Logout
+						onClick={() => router.push(path)}>
+						Start the chat
+					</button>
+				</div>
+			</div>
+			<div className='BottomDiv'>
+				{isLogined && (
+					<button className='LogoutButton' onClick={logout}>
+						<Image src='/logout.png' alt='logout' width='60' height='60' />
+						See u next time!
 					</button>
 				)}
 			</div>
