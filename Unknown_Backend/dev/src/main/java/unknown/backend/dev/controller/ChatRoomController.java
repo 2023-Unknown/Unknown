@@ -25,30 +25,13 @@ public class ChatRoomController {
         this.chatService = chatService;
     }
 
-    @GetMapping("/room")
-    public String rooms(Model model) {
-        return "/chat/room";
-    }
-
-    // 모든 채팅방 리스트
     @GetMapping("/rooms")
     @ResponseBody
     @ApiOperation(value="모든 채팅방 리스트",notes="모든 채팅방 리스트를 반환합니다.")
     public List<ChatRoom> room() {
         return chatService.findAllRoom();
     }
-
-    @GetMapping("/room/enter")
-    @ResponseBody
-    @ApiOperation(value="랜덤 채팅방 입장",notes="랜덤 채팅방에 입장합니다.")
-    public ChatRoom startChatting(Authentication auth) {
-        User chattingUser = chatService.getLoginUserByEmail(auth.getName());
-        if (chattingUser == null) {
-            return null;
-        }
-        return chatService.startRandomChatting();
-    }
-
+    
     @GetMapping("/room/make")
     @ResponseBody
     @ApiOperation(value="채팅방 생성",notes="채팅방을 생성합니다.")
@@ -64,5 +47,17 @@ public class ChatRoomController {
     public ChatRoom roomInfo(@PathVariable String roomId) {
         return chatService.findRoomById(roomId);
     }
+
+    @GetMapping("/room/enter")
+    @ResponseBody
+    @ApiOperation(value="랜덤 채팅방 입장",notes="랜덤 채팅방에 입장합니다.")
+    public ChatRoom startChatting(Authentication auth) {
+        User chattingUser = chatService.getLoginUserByEmail(auth.getName());
+        if (chattingUser == null) {
+            return null;
+        }
+        return chatService.startRandomChatting();
+    }
+
 
 }

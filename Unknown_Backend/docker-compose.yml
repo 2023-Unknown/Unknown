@@ -15,6 +15,7 @@ services:
       - ./data/mysql:/var/lib/mysql
     networks:
       - unknown_network
+    restart: always
   
   springboot:
     build:

@@ -26,13 +26,10 @@ public class TranslationService {
         this.restTemplate = restTemplate;
     }
 
-    public String translateToKorean(String inputText) {
-        String targetLanguage = "KO";
-        String[] texts = {inputText};
-
-        TranslationRequest request = new TranslationRequest(texts, targetLanguage);
-
+    public String translate(String[] inputText,String targetLang) {
+        TranslationRequest request = new TranslationRequest(inputText, targetLang);
         HttpHeaders headers = new HttpHeaders();
+
         headers.set("Authorization", "DeepL-Auth-Key " + apiKey);
 
         HttpEntity<TranslationRequest> entity = new HttpEntity<>(request, headers);
@@ -48,28 +45,5 @@ public class TranslationService {
 
         return "번역 실패";
 
-    }
-
-    public String translateToEnglish(String inputText) {
-        String targetLanguage = "EN";
-        String[] texts = {inputText};
-
-        TranslationRequest request = new TranslationRequest(texts, targetLanguage);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "DeepL-Auth-Key " + apiKey);
-
-        HttpEntity<TranslationRequest> entity = new HttpEntity<>(request, headers);
-
-        ResponseEntity<TranslationResponse> responseEntity = restTemplate.postForEntity(apiUrl, entity, TranslationResponse.class);
-
-        if (responseEntity.getStatusCode().is2xxSuccessful()) {
-            TranslationResponse translationResponse = responseEntity.getBody();
-            if (translationResponse != null && translationResponse.getTranslations() != null && !translationResponse.getTranslations().isEmpty()) {
-                return translationResponse.getTranslations().get(0).getText();
-            }
-        }
-
-        return "번역 실패";
     }
 }

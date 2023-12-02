@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class ReportDTO {
+public class ReportRequest {
     @ApiModelProperty(example = "신고한 유저")
     private final String reporterEmail;
 
