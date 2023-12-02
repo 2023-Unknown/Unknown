@@ -38,14 +38,14 @@ export default function page() {
 					</button>
 				</div>
 			</div>
-			{/* <div className='BottomDiv'>
+			<div className='BottomDiv'>
 				{isLogined && (
 					<button className='LogoutButton' onClick={logout}>
 						<Image src='/logout.png' alt='logout' width='60' height='60' />
 						See u next time!
 					</button>
 				)}
-			</div> */}
+			</div>
 		</div>
 	);
 }
