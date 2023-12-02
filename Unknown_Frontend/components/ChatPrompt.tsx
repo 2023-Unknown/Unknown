@@ -1,12 +1,24 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { WebSocketClient } from '../config/websocket';
 
-export default function ChatPrompt({ ws }: { ws: WebSocket | null }) {
+export default function ChatPrompt(room: string) {
 	const [message, setMessage] = useState<string>('');
 	const [messages, setMessages] = useState<string[]>([]);
+	const [omessages, setOMessages] = useState<string[]>([]);
 	const chatMessagesRef = useRef<HTMLDivElement | null>(null);
 	const chatInputRef = useRef<HTMLInputElement>(null);
+
+	WebSocketClient.onConnect = () => {
+		WebSocketClient.subscribe('/topic/chat/room/123', (message) => {
+			// Received Message : {"type":"TALK","roomId":"123","sender":"heesane","message":"hi"}
+			let msg = JSON.parse(message.body); // String -> Json으로 변환
+			setOMessages([...omessages, msg.message]);
+			console.log(`${msg.sender} : ${msg.message}`);
+		});
+	};
+	WebSocketClient.activate();
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setMessage(e.target.value);
@@ -16,15 +28,15 @@ export default function ChatPrompt({ ws }: { ws: WebSocket | null }) {
 		e.preventDefault();
 		if (message.trim() !== '') {
 			// 추가된 부분 11.29
-			ws?.publish({
-				destination: '/app/chat/message', body:
-					JSON.stringify({
-						"type": "TALK",
-						"sender": "heesane",
-						"message": message,
-						"roomId": "123"
-					})
-			})
+			WebSocketClient?.publish({
+				destination: '/app/chat/message',
+				body: JSON.stringify({
+					type: 'TALK',
+					sender: 'heesane',
+					message: message,
+					roomId: '123',
+				}),
+			});
 
 			setMessages([...messages, message]);
 			setMessage('');
@@ -46,33 +58,36 @@ export default function ChatPrompt({ ws }: { ws: WebSocket | null }) {
 	}, [messages]);
 
 	return (
-		<div>
-			<div className='ChatBox'>
-				<div className='ChatMessages' ref={chatMessagesRef}>
-					{' '}
-					{/* 수정된 부분 */}
-					{messages.map((msg, index) => (
-						<div key={index} className='Message'>
-							{msg}
-						</div>
-					))}{' '}
-					{/* 수정된 부분 */}
-				</div>
-				<div className='ChatInputBox'>
-					<form onSubmit={handleSubmit}>
-						<input
-							ref={chatInputRef}
-							className='ChatInput'
-							type='text'
-							value={message}
-							onChange={handleInputChange}
-							placeholder='Type your message'
-						/>
-						<button className='ChatButton' type='submit'>
-							Send
-						</button>
-					</form>
-				</div>
+		<div className='ChatBox'>
+			<div className='ChatMessages' ref={chatMessagesRef}>
+				{' '}
+				{/* 수정된 부분 */}
+				{messages.map((msg, index) => (
+					<div key={index} className='Message'>
+						{msg}
+					</div>
+				))}{' '}
+				{omessages.map((msg, index) => (
+					<div key={index} className='Message'>
+						{msg}
+					</div>
+				))}{' '}
+				{/* 수정된 부분 */}
+			</div>
+			<div className='ChatInputBox'>
+				<form onSubmit={handleSubmit}>
+					<input
+						ref={chatInputRef}
+						className='ChatInput'
+						type='text'
+						value={message}
+						onChange={handleInputChange}
+						placeholder='Type your message'
+					/>
+					<button className='ChatButton' type='submit'>
+						Send
+					</button>
+				</form>
 			</div>
 		</div>
 	);
