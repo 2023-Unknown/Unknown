@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { translateToKO } from '../apis/chat';
 
 interface Props {
@@ -10,22 +10,17 @@ interface Props {
 
 export default function ChatMessage(props: Props) {
 	const [isHovering, setIsHovering] = useState(0);
-	console.log(props.message);
-	console.log(props.tmessage);
+	const [tm, setTm] = useState<string | undefined>(undefined);
 
-	const translateMessage = async (message: string) => {
-		await translateToKO(message)
-			.then((res) => {
-				console.log(res);
-				return res;
-			})
-			.catch(() => {
-				return '';
-			});
-	};
+	useEffect(() => {
+		const translateMessage = async (message: string) => {
+			const res = await translateToKO(message);
+			console.log(res);
+			setTm(res);
+		};
 
-	const hw = translateMessage(props.message).then((res) => console.log(res));
-	console.log(hw);
+		translateMessage(props.message);
+	}, [props.message]);
 
 	return (
 		<div
@@ -33,7 +28,7 @@ export default function ChatMessage(props: Props) {
 			className={props.css}
 			onMouseEnter={() => setIsHovering(1)}
 			onMouseLeave={() => setIsHovering(0)}>
-			{isHovering === 0 ? props.message : props.tmessage}
+			{isHovering === 0 ? props.message : tm}
 		</div>
 	);
 }
