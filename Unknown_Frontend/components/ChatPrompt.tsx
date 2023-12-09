@@ -4,15 +4,19 @@ import React, { useState, useRef, useEffect } from 'react';
 import { WebSocketClient } from '../config/websocket';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { translateToKO } from '../apis/chat';
+import { mapLinear } from 'three/src/math/MathUtils';
+import ChatMessage from '../components/ChatMessage';
 
 interface IMessage {
 	user: string;
 	message: string;
+	tmessage: Promise<string>;
 }
 
 export default function ChatPrompt(room: string) {
 	const router = useRouter();
-
+	const [isHovering, setIsHovering] = useState(0);
 	const [message, setMessage] = useState<string>(''); // 보낼 메세지 (1개)
 	const [chat, setChat] = useState<IMessage[]>([]); // 전체 메세지들
 	const chatMessagesRef = useRef<HTMLDivElement | null>(null);
@@ -60,12 +64,25 @@ export default function ChatPrompt(room: string) {
 
 	const handleReceivedMessage = (message: string) => {
 		let data = JSON.parse(message.body); // String -> Json으로 변환
+		let tr = translateMessage(data.message);
 		let msg = {
 			user: data.sender,
 			message: data.message,
+			tmessage: tr,
 		};
 		chat.push(msg);
 		setChat([...chat]);
+	};
+
+	const translateMessage = async (message: string) => {
+		const translateResult = await translateToKO(message)
+			.then((res) => {
+				console.log(res);
+				return res;
+			})
+			.catch(() => {
+				return '';
+			});
 	};
 
 	const reportUser = () => {
@@ -79,11 +96,11 @@ export default function ChatPrompt(room: string) {
 	return (
 		<>
 			<div className='ToolBox'>
-				<button onClick={reportUser} className='ReportButton'>
+				{/* <button onClick={reportUser} className='ReportButton'>
 					<Image src='/report.png' alt='report' width='35' height='30' />
-				</button>
+				</button> */}
 				<button onClick={exitRoom} className='ExitButton'>
-					<Image src='/exit.png' alt='exit' width='50' height='80' />
+					<Image src='/exit.png' alt='exit' width='60' height='60' />
 				</button>
 			</div>
 			<div className='ChatBox'>
@@ -91,11 +108,26 @@ export default function ChatPrompt(room: string) {
 					{' '}
 					{chat.map((chat, index) => {
 						let css = chat.user === 'DefaultUser' ? 'MyMessage' : 'OtherMessage';
+						// let msg = chat.message;
 						return (
-							<div key={index} className={css}>
-								{chat.message}
+							<div>
+								<ChatMessage
+									index={index}
+									css={css}
+									message={chat.message}
+									tmessage={chat.tmessage}
+								/>
 							</div>
 						);
+						// return (
+						// 	<div
+						// 		key={index}
+						// 		className={css}
+						// 		onMouseEnter={() => setIsHovering(1)}
+						// 		onMouseLeave={() => setIsHovering(0)}>
+						// 		{isHovering === 0 ? chat.message : chat.tmessage}
+						// 	</div>
+						// );
 					})}{' '}
 				</div>
 			</div>
