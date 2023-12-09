@@ -7,12 +7,7 @@ import Image from 'next/image';
 import { translateToKO } from '../apis/chat';
 import { mapLinear } from 'three/src/math/MathUtils';
 import ChatMessage from '../components/ChatMessage';
-
-interface IMessage {
-	user: string;
-	message: string;
-	tmessage: Promise<string>;
-}
+import { IMessage } from '../states/interface';
 
 export default function ChatPrompt(room: string) {
 	const router = useRouter();
@@ -64,20 +59,19 @@ export default function ChatPrompt(room: string) {
 
 	const handleReceivedMessage = (message: string) => {
 		let data = JSON.parse(message.body); // String -> Json으로 변환
-		let tr = translateMessage(data.message);
+		// let tr = translateMessage(data.message);
 		let msg = {
 			user: data.sender,
 			message: data.message,
-			tmessage: tr,
+			// tmessage: tr,
 		};
 		chat.push(msg);
 		setChat([...chat]);
 	};
 
 	const translateMessage = async (message: string) => {
-		const translateResult = await translateToKO(message)
+		await translateToKO(message)
 			.then((res) => {
-				console.log(res);
 				return res;
 			})
 			.catch(() => {

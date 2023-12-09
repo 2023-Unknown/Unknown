@@ -1,20 +1,20 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { translateToKO } from '../apis/chat';
 
 interface Props {
 	index: number;
 	css: string;
 	message: string;
-	tmessage: Promise<string>;
+	tmessage: string;
 }
 
-const ChatMessage = ({ index, css, message, tmessage }: Props) => {
-	console.log(tmessage);
-	console.log(typeof tmessage);
+export default function ChatMessage(props: Props) {
 	const [isHovering, setIsHovering] = useState(0);
+	console.log(props.message);
+	console.log(props.tmessage);
 
 	const translateMessage = async (message: string) => {
-		const translateResult = await translateToKO(message)
+		await translateToKO(message)
 			.then((res) => {
 				console.log(res);
 				return res;
@@ -24,15 +24,16 @@ const ChatMessage = ({ index, css, message, tmessage }: Props) => {
 			});
 	};
 
+	const hw = translateMessage(props.message).then((res) => console.log(res));
+	console.log(hw);
+
 	return (
 		<div
-			key={index}
-			className={css}
+			key={props.index}
+			className={props.css}
 			onMouseEnter={() => setIsHovering(1)}
 			onMouseLeave={() => setIsHovering(0)}>
-			{isHovering === 0 ? message : tmessage}
+			{isHovering === 0 ? props.message : props.tmessage}
 		</div>
 	);
-};
-
-export default ChatMessage;
+}
