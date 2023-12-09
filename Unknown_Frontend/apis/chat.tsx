@@ -9,3 +9,13 @@ export const getChatroom = async (token: String) => {
 	});
 	return response.data;
 };
+
+/* 메세지 번역 */
+export const translateToKO = async (message: string) => {
+	const data = {
+		target_lang: 'KO',
+		text: [message],
+	};
+	const response = await axios.post('/translate', data);
+	return response.data;
+};
