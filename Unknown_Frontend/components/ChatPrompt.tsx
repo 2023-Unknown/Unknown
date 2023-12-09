@@ -5,7 +5,6 @@ import { WebSocketClient } from '../config/websocket';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { translateToKO } from '../apis/chat';
-import { mapLinear } from 'three/src/math/MathUtils';
 import ChatMessage from '../components/ChatMessage';
 import { IMessage } from '../states/interface';
 
@@ -30,10 +29,14 @@ export default function ChatPrompt(room: string) {
 
 	// WebSocket 연결
 	WebSocketClient.onConnect = () => {
-		WebSocketClient.subscribe('/topic/chat/room/123', (message: string) => {
-			// Received Message : {"type":"TALK","roomId":"123","sender":"heesane","message":"hi"}
-			handleReceivedMessage(message);
-		});
+		console.log(room.room);
+		WebSocketClient.subscribe(
+			'/topic/chat/room/' + room.room,
+			(message: string) => {
+				// Received Message : {"type":"TALK","roomId":"123","sender":"heesane","message":"hi"}
+				handleReceivedMessage(message);
+			},
+		);
 	};
 	WebSocketClient.activate();
 
@@ -51,7 +54,7 @@ export default function ChatPrompt(room: string) {
 				type: 'TALK',
 				sender: 'DefaultUser',
 				message: message,
-				roomId: '123',
+				roomId: room.room,
 			}),
 		});
 		setMessage('');
@@ -59,11 +62,9 @@ export default function ChatPrompt(room: string) {
 
 	const handleReceivedMessage = (message: string) => {
 		let data = JSON.parse(message.body); // String -> Json으로 변환
-		// let tr = translateMessage(data.message);
 		let msg = {
 			user: data.sender,
 			message: data.message,
-			// tmessage: tr,
 		};
 		chat.push(msg);
 		setChat([...chat]);
@@ -113,15 +114,6 @@ export default function ChatPrompt(room: string) {
 								/>
 							</div>
 						);
-						// return (
-						// 	<div
-						// 		key={index}
-						// 		className={css}
-						// 		onMouseEnter={() => setIsHovering(1)}
-						// 		onMouseLeave={() => setIsHovering(0)}>
-						// 		{isHovering === 0 ? chat.message : chat.tmessage}
-						// 	</div>
-						// );
 					})}{' '}
 				</div>
 			</div>
