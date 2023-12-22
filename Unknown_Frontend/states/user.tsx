@@ -36,3 +36,8 @@ export const userToken = atom({
 		token: 'Bearer',
 	},
 });
+
+export const userEmail = atom({
+	key: 'email',
+	default: '',
+});

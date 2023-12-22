@@ -7,7 +7,9 @@ import Image from 'next/image';
 import { translateToKO } from '../apis/chat';
 import ChatMessage from '../components/ChatMessage';
 import { IMessage } from '../states/interface';
-
+import { useRecoilValue } from 'recoil';
+import { userEmail } from '../states/user';
+import { getCookie } from '@/config/cookie';
 export default function ChatPrompt(room: string) {
 	const router = useRouter();
 	const [isHovering, setIsHovering] = useState(0);
@@ -15,6 +17,8 @@ export default function ChatPrompt(room: string) {
 	const [chat, setChat] = useState<IMessage[]>([]); // 전체 메세지들
 	const chatMessagesRef = useRef<HTMLDivElement | null>(null);
 	const chatInputRef = useRef<HTMLInputElement>(null);
+
+	const myEmail = getCookie('userEmail');
 
 	useEffect(() => {
 		scrollToBottom();
@@ -47,12 +51,12 @@ export default function ChatPrompt(room: string) {
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		if (message.trim() === '') return;
-
+		console.log(myEmail);
 		WebSocketClient?.publish({
 			destination: '/app/chat/message',
 			body: JSON.stringify({
 				type: 'TALK',
-				sender: 'DefaultUser',
+				sender: myEmail,
 				message: message,
 				roomId: room.room,
 			}),
@@ -62,6 +66,7 @@ export default function ChatPrompt(room: string) {
 
 	const handleReceivedMessage = (message: string) => {
 		let data = JSON.parse(message.body); // String -> Json으로 변환
+		console.log(data);
 		let msg = {
 			user: data.sender,
 			message: data.message,
@@ -102,7 +107,9 @@ export default function ChatPrompt(room: string) {
 				<div className='ChatMessages' ref={chatMessagesRef}>
 					{' '}
 					{chat.map((chat, index) => {
-						let css = chat.user === 'DefaultUser' ? 'MyMessage' : 'OtherMessage';
+						console.log(chat.user)
+						console.log(myEmail)
+						let css = chat.user === myEmail ? 'MyMessage' : 'OtherMessage';
 						// let msg = chat.message;
 						return (
 							<div>

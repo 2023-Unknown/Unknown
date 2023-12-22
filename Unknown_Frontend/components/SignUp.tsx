@@ -13,6 +13,7 @@ export default function SignUp(props: any) {
 		username: '',
 		email: '',
 		password: '',
+		language: "korean",
 	});
 	const [code, setCode] = useState('');
 	const [returnCode, setReturnCode] = useState('');
