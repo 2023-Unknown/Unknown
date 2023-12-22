@@ -1,22 +1,27 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { setCookie } from '@/config/cookie';
-import { useSetRecoilState, useRecoilValue } from 'recoil';
+import { useSetRecoilState, useRecoilValue, useRecoilState } from 'recoil';
 import SignUpModal from './SignUp';
-import { userToken } from '../states/user';
+import { userToken, userEmail } from '../states/user';
 import { loginUser } from '../apis/user';
 
 export default function Input() {
 	const router = useRouter();
+
 	const token = useRecoilValue(userToken);
+
 	const setToken = useSetRecoilState(userToken);
+	const setEmail = useSetRecoilState(userEmail);
+
 	const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
 	const [loginData, setLoginData] = useState({
 		loginEmail: '',
 		password: '',
 	});
+
 
 	const modalVisible = () => {
 		setIsModalOpen(!isModalOpen);
@@ -33,6 +38,8 @@ export default function Input() {
 			const getToken = await loginUser(loginData).then((res) => {
 				setToken(res);
 				setCookie('userToken', res, []);
+				setEmail(loginData.loginEmail);
+				setCookie('userEmail', loginData.loginEmail, []);
 				router.push('/chatting');
 			});
 		} catch (error) {
